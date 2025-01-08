@@ -16,3 +16,13 @@ class TestPlan(BaseModel):
     business_id = Column(Integer, ForeignKey("businesses.id"))
     business = relationship("Business", back_populates="test_plans")
 
+    def __init__(self, name: str, description: str, start_date: str, end_date: str, reward: str, business):
+        super().__init__()
+        self.name = name
+        self.description = description
+        self.start_date = start_date
+        self.end_date = end_date
+        self.reward = reward
+        self.business = business
+        self.status = "active"
+
