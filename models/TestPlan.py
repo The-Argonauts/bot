@@ -1,7 +1,9 @@
-from typing import Any
+from typing import Any, List
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
-from sqlalchemy.orm import relationship, Mapped
+from sqlalchemy.orm import relationship, Mapped, mapped_column
 from models.Base import BaseModel
+from models.test_plan_users import association_table
+
 
 class TestPlan(BaseModel):
     __tablename__ = "test_plans"
@@ -13,8 +15,10 @@ class TestPlan(BaseModel):
     status = Column(String, nullable=False)
     reward = Column(String, nullable=False)
 
-    business_id = Column(Integer, ForeignKey("businesses.id"))
-    business = relationship("Business", back_populates="test_plans")
+    business_id: Mapped[int] = mapped_column(ForeignKey("businesses.id"))
+    business: Mapped["Business"] = relationship(back_populates="test_plans")  # Use string annotation
+
+    users: Mapped[List["User"]] = relationship(secondary=association_table, back_populates="test_plans")
 
     def __init__(self, name: str, description: str, start_date: str, end_date: str, reward: str, business, **kw: Any):
         super().__init__(**kw)

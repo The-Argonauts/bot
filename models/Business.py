@@ -1,6 +1,10 @@
+from typing import List
+
 from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
 from models.Base import BaseModel
+from models.TestPlan import TestPlan
+
 
 class Business(BaseModel):
     __tablename__ = 'businesses'
@@ -9,4 +13,4 @@ class Business(BaseModel):
     username = Column(String, nullable=False)
     password = Column(String, nullable=False)
 
-    test_plans = relationship('TestPlan', back_populates='business')
+    test_plans: Mapped[List["TestPlan"]] = relationship(back_populates="business")  # Use string annotation
