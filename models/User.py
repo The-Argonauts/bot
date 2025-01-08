@@ -14,4 +14,4 @@ class User(BaseModel):
     username = Column(String, nullable=False)
     password = Column(String, nullable=False)
 
-    testplans: Mapped[List[TestPlan]] = relationship(secondary=association_table, back_populates="users")
+    testplans: Mapped[List[TestPlan]] = relationship(secondary=association_table)

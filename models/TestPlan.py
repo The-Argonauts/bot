@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Any, List
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship, Mapped, mapped_column
@@ -16,9 +17,6 @@ class TestPlan(BaseModel):
     reward = Column(String, nullable=False)
 
     business_id: Mapped[int] = mapped_column(ForeignKey("businesses.id"))
-    business: Mapped["Business"] = relationship(back_populates="test_plans")  # Use string annotation
-
-    users: Mapped[List["User"]] = relationship(secondary=association_table, back_populates="test_plans")
 
     def __init__(self, name: str, description: str, start_date: str, end_date: str, reward: str, business, **kw: Any):
         super().__init__(**kw)

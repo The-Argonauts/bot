@@ -1,5 +1,6 @@
-from typing import List
+from __future__ import annotations
 
+from typing import List
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship, Mapped
 from models.Base import BaseModel
@@ -13,4 +14,4 @@ class Business(BaseModel):
     username = Column(String, nullable=False)
     password = Column(String, nullable=False)
 
-    test_plans: Mapped[List["TestPlan"]] = relationship(back_populates="business")  # Use string annotation
+    test_plans: Mapped[List["TestPlan"]] = relationship()
