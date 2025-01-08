@@ -1,9 +1,8 @@
 from __future__ import annotations
-from typing import Any, List
+from typing import Any
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
-from sqlalchemy.orm import relationship, Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column
 from models.Base import BaseModel
-from models.test_plan_users import association_table
 
 
 class TestPlan(BaseModel):

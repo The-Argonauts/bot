@@ -4,7 +4,6 @@
 pip install -r requirements.txt
 ```
 
-
 # How to update the database
 ```bash
 cd configs

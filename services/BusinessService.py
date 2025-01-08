@@ -24,3 +24,9 @@ class BusinessService:
     def create_testplan(self, business: Business, name: str, description: str, start_date: str, end_date: str, reward: str):
         testplan = TestPlan(name=name, description=description, start_date=start_date, end_date=end_date, reward=reward, business=business)
         self.business_repo.create_testplan(business, testplan)
+
+    def validate_business(self, username: str, password: str):
+        business = self.business_repo.get_by_username(username)
+        if (not business) or business.password != password:
+            raise ValueError("Username or Password is not valid")
+        return business.id
