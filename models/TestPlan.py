@@ -1,7 +1,7 @@
+from typing import Any
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, Mapped
 from models.Base import BaseModel
-
 
 class TestPlan(BaseModel):
     __tablename__ = "test_plans"
@@ -16,8 +16,8 @@ class TestPlan(BaseModel):
     business_id = Column(Integer, ForeignKey("businesses.id"))
     business = relationship("Business", back_populates="test_plans")
 
-    def __init__(self, name: str, description: str, start_date: str, end_date: str, reward: str, business):
-        super().__init__()
+    def __init__(self, name: str, description: str, start_date: str, end_date: str, reward: str, business, **kw: Any):
+        super().__init__(**kw)
         self.name = name
         self.description = description
         self.start_date = start_date

@@ -1,6 +1,11 @@
-from sqlalchemy import  Column, Integer, String, ForeignKey, Date
-from sqlalchemy.orm import relationship
+from typing import List
+from sqlalchemy import Column, Integer, String
+from sqlalchemy.orm import relationship, Mapped
+
 from models.Base import BaseModel
+from models.TestPlan import TestPlan
+from models.test_plan_users import association_table
+
 
 class User(BaseModel):
     __tablename__ = "users"
@@ -9,4 +14,5 @@ class User(BaseModel):
     username = Column(String, nullable=False)
     password = Column(String, nullable=False)
 
-    test_plans = relationship("TestPlan", back_populates="business")
+    testplans: Mapped[List[TestPlan]] = relationship(secondary=association_table)
+
