@@ -4,7 +4,7 @@ from models.Base import BaseModel
 
 class User(BaseModel):
     __tablename__ = "users"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
     username = Column(String, nullable=False)
     password = Column(String, nullable=False)

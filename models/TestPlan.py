@@ -5,7 +5,7 @@ from models.Base import BaseModel
 
 class TestPlan(BaseModel):
     __tablename__ = "test_plans"
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
     description = Column(String, nullable=False)
     start_date = Column(Date, nullable=False)
