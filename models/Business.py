@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-from models.Base import Base
+from models.Base import BaseModel
 
-class Business(Base):
+class Business(BaseModel):
     __tablename__ = 'businesses'
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)

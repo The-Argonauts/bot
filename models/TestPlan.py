@@ -1,9 +1,9 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
-from models.Base import Base
+from models.Base import BaseModel
 
 
-class TestPlan(Base):
+class TestPlan(BaseModel):
     __tablename__ = "test_plans"
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)

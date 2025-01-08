@@ -1,8 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
-from models.Base import Base
+from models.Base import BaseModel
 
-
-class Feedback(Base):
+class Feedback(BaseModel):
     __tablename__ = 'feedbacks'
     id = Column(Integer, primary_key=True)
     content = Column(String, nullable=False)

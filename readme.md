@@ -5,8 +5,14 @@ pip install -r requirements.txt
 ```
 
 
-# How to initialize database
+# How to update the database
 ```bash
-python3 -m configs.db_setup
+cd configs
+alembic upgrade head
 ```
 
+# How to generate a new migration
+```bash
+cd configs
+alembic revision --autogenerate -m "migration message"
+```

@@ -1,8 +1,8 @@
 from sqlalchemy import  Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import relationship
-from models.Base import Base
+from models.Base import BaseModel
 
-class User(Base):
+class User(BaseModel):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
