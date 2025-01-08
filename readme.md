@@ -1,6 +1,12 @@
-# How to initialize database
 
+# Install requirements
 ```bash
-  python3 -m configs.db_setup
+pip install -r requirements.txt
+```
+
+
+# How to initialize database
+```bash
+python3 -m configs.db_setup
 ```
 
