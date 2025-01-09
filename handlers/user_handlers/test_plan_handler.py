@@ -31,11 +31,11 @@ class TestPlanHandler:
                     f"End Date: {test.end_date}"
                 )
                 await update.message.reply_text(message)
+
+            await update.message.reply_text("Please enter Plan Id.")
+            return PLAN_ID
         else:
             await update.message.reply_text("No test plans available.")
-        
-        await update.message.reply_text("Please enter Plan Id.")
-        return PLAN_ID
         
 
     async def id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
