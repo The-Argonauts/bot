@@ -3,7 +3,7 @@ from typing import Any
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from models.Base import BaseModel
-
+from models.Feedback import Feedback
 
 class TestPlan(BaseModel):
     __tablename__ = "test_plans"
