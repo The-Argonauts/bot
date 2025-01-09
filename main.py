@@ -5,6 +5,7 @@ from handlers.start_handler import StartHandler
 from handlers.user_handlers.login_handler import UserLoginHandler
 from handlers.user_handlers.signup_handler import UserSignupHandler
 from handlers.cancel_handler import CancelHandler
+from handlers.user_handlers.test_plan_handler import TestPlanHandler
 
 
 def main():
@@ -14,6 +15,7 @@ def main():
     user_signup_handler = UserSignupHandler()
     user_login_handler = UserLoginHandler()
     business_signup_handler = BusinessSignupHandler()
+    test_plan_handler = TestPlanHandler()
     cancel_handler = CancelHandler()
 
     # Register handlers
@@ -22,6 +24,7 @@ def main():
     app.add_handler(user_login_handler.handler)
     app.add_handler(business_signup_handler.handler)
     app.add_handler(cancel_handler.handler)
+    app.add_handler(test_plan_handler.handler)
 
     print("Bot is running...")
     app.run_polling()
