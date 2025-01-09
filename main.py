@@ -8,7 +8,8 @@ from handlers.cancel_handler import CancelHandler
 
 
 def main():
-    app = ApplicationBuilder().token("7554909272:AAFj4k-SlOk3aNeDZzP5ucB4dqvonfNM0Gw").build()
+    app = ApplicationBuilder().token(
+        "7554909272:AAFj4k-SlOk3aNeDZzP5ucB4dqvonfNM0Gw").build()
 
     start_handler = StartHandler()
     user_signup_handler = UserSignupHandler()

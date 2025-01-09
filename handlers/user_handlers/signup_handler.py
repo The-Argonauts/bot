@@ -1,6 +1,7 @@
 from telegram import Update
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters, ContextTypes
 from services.UserService import UserService
+import bcrypt
 # States
 NAME, USERNAME, PASSWORD = range(3)
 
@@ -33,7 +34,14 @@ class UserSignupHandler:
         return PASSWORD
 
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        context.user_data["password"] = update.message.text
+        plain_password = update.message.text
+        # Hash the password using bcrypt
+        hashed_password = bcrypt.hashpw(
+            plain_password.encode('utf-8'), bcrypt.gensalt())
+        # Store the hashed password in user_data
+        context.user_data["password"] = hashed_password
+        print(hashed_password)
+        # Send a confirmation message to the user
         await update.message.reply_text("Signup complete! Thank you.")
 
         self.user_service.create_user(

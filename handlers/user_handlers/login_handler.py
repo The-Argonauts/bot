@@ -29,10 +29,17 @@ class UserLoginHandler:
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["password"] = update.message.text
         try:
-            self.user_service.validate_user(context.user_data["username"], context.user_data["password"])
-            await update.message.reply_text("you logged in successfully")
+            # Retrieve the stored hashed password for the given username
+            stored_hashed_password = self.user_service.get_hashed_password(
+                context.user_data["username"])
+            # Validate the entered password against the stored hashed password
+            if bcrypt.checkpw(entered_password.encode('utf-8'), stored_hashed_password):
+                await update.message.reply_text("You logged in successfully")
+            else:
+                await update.message.reply_text("Login failed")
+
         except ValueError:
-            await update.message.reply_text("login failed")
+            await update.message.reply_text("Login failed")
 
         return ConversationHandler.END
 
