@@ -9,13 +9,11 @@ class TestPlanHandler:
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("test_plans", self.start)],
             states={
-                PLAN_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.id)],
+                PLAN_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.select_id)],
                 APPLY: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.apply_for_plan)],
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
-        self.testPlanService = TestPlanService()
-        self.handler = CommandHandler("test_plans", self.start)
         self.testPlanService = TestPlanService()
 
         
@@ -38,11 +36,15 @@ class TestPlanHandler:
             await update.message.reply_text("No test plans available.")
         
 
-    async def id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        context.user_data["id"] = update.message.text
+    async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        plan_id = update.message.text.strip()
+        context.user_data["id"] = plan_id
         
         test_plans = self.testPlanService.get_all_testplans()
+        print(test_plans)
         selected_test_plan = next((test for test in test_plans if str(test.id) == context.user_data["id"]), None)
+        print(selected_test_plan)
 
         if selected_test_plan:
             message = (
