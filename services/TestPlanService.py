@@ -2,7 +2,7 @@ from repositories.TestPlanRepository import TestPlanRepository
 from configs.database import SessionLocal
 
 
-class UserService:
+class TestPlanService:
     def __init__(self):
         self.db_session = SessionLocal()
         self.testplan_repo = TestPlanRepository(self.db_session)

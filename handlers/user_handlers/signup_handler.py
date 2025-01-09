@@ -2,7 +2,8 @@ from telegram import Update
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters, ContextTypes
 from services.UserService import UserService
 # States
-NAME, USERNAME, PASSWORD = range(3)
+NAME, USERNAME, PASSWORD, EMAIL, PHONE_NUMBER = range(5)
+
 
 
 class UserSignupHandler:
@@ -12,6 +13,8 @@ class UserSignupHandler:
             states={
                 NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.name)],
                 USERNAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.username)],
+                PHONE_NUMBER: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.phone_number)],
+                EMAIL: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.email)],
                 PASSWORD: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.password)],
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
@@ -29,8 +32,20 @@ class UserSignupHandler:
 
     async def username(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["username"] = update.message.text
+        await update.message.reply_text("Please enter your phone number.")
+        return PHONE_NUMBER
+    
+
+    async def phone_number(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        context.user_data["phone_number"] = update.message.text
+        await update.message.reply_text("Please enter your E-mail.")
+        return EMAIL
+    
+    async def email(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        context.user_data["email"] = update.message.text
         await update.message.reply_text("Please enter your password.")
         return PASSWORD
+    
 
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["password"] = update.message.text
@@ -39,6 +54,8 @@ class UserSignupHandler:
         self.user_service.create_user(
             context.user_data["name"],
             context.user_data["username"],
+            context.user_data["phone_number"],
+            context.user_data["email"],
             context.user_data["password"],
         )
 
