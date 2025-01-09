@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Any
 from sqlalchemy import Column, Integer, String, ForeignKey, Date
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from models.Base import BaseModel
 
 
@@ -16,6 +16,7 @@ class TestPlan(BaseModel):
     reward = Column(String, nullable=False)
 
     business_id: Mapped[int] = mapped_column(ForeignKey("businesses.id"))
+    feedbacks: Mapped["Feedback"] = relationship()
 
     def __init__(self, name: str, description: str, start_date: str, end_date: str, reward: str, business, **kw: Any):
         super().__init__(**kw)

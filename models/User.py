@@ -15,3 +15,4 @@ class User(BaseModel):
     password = Column(String, nullable=False)
 
     testplans: Mapped[List[TestPlan]] = relationship(secondary=association_table)
+    feedbacks: Mapped[List["Feedback"]] = relationship()
