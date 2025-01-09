@@ -42,5 +42,5 @@ class BusinessLoginHandler:
         return ConversationHandler.END
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        await update.message.reply_text("Signup cancelled.")
+        await update.message.reply_text("login cancelled.")
         return ConversationHandler.END
