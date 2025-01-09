@@ -13,5 +13,7 @@ class User(BaseModel):
     name = Column(String, nullable=False)
     username = Column(String, nullable=False)
     password = Column(String, nullable=False)
+    email = Column(String, nullable=False)
+    phoneNumber = Column(String, nullable=False)
 
     testplans: Mapped[List[TestPlan]] = relationship(secondary=association_table)
