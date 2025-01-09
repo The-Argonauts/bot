@@ -37,7 +37,7 @@ class UserSignupHandler:
     
 
     async def phone_number(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        context.user_data["phoneNumber"] = update.message.text
+        context.user_data["phone_number"] = update.message.text
         await update.message.reply_text("Please enter your E-mail.")
         return EMAIL
     
