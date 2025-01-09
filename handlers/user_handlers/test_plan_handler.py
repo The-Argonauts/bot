@@ -53,6 +53,7 @@ class TestPlanHandler:
                 f"End Date: {selected_test_plan.end_date}"
             )
             await update.message.reply_text(message)
+            return APPLY
         else:
             await update.message.reply_text("Invalid Test Plan ID. Please enter a valid ID.")
             return PLAN_ID
