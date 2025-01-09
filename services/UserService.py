@@ -8,11 +8,11 @@ class UserService:
         self.db_session = SessionLocal()
         self.user_repo = UserRepository(self.db_session)
 
-    def create_user(self, name: str, username: str, password: str):
+    def create_user(self, name: str, username: str, phone_number: str, email: str, password: str):
         user = self.user_repo.get_by_username(username)
         if user:
             raise ValueError("Username already exists.")
-        user = User(name=name, username=username, password=password)
+        user = User(name=name, username=username, phone_number=phone_number, email=email, password=password)
         self.user_repo.create(user)
 
     def get_user(self, user_id: int):
