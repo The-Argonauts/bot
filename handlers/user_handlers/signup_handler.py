@@ -54,7 +54,7 @@ class UserSignupHandler:
         self.user_service.create_user(
             context.user_data["name"],
             context.user_data["username"],
-            context.user_data["phoneNumber"],
+            context.user_data["phone_number"],
             context.user_data["email"],
             context.user_data["password"],
         )
