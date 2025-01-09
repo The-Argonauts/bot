@@ -15,3 +15,8 @@ alembic upgrade head
 cd configs
 alembic revision --autogenerate -m "migration message"
 ```
+
+# SetUp redis server
+```bash
+docker run --name redis -p 6379:6379 -d redis
+```
