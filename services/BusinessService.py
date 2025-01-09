@@ -15,7 +15,7 @@ class BusinessService:
         business = Business(name=name, username=username, password=password)
         self.business_repo.create(business)
 
-    def get_user(self, user_id: int):
+    def get_business(self, user_id: int):
         business = self.business_repo.get_by_id(Business, user_id)
         if not business:
             raise ValueError("Business not found.")

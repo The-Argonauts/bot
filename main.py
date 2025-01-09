@@ -2,6 +2,7 @@ from telegram.ext import ApplicationBuilder
 
 from configs.redis import RedisClient
 from filters.Authorization import Authorization
+from handlers.business_handlers.create_testplan_handler import CreateTestPlanHandler
 from handlers.business_handlers.login_handler import BusinessLoginHandler
 from handlers.business_handlers.signup_handler import BusinessSignupHandler
 from handlers.start_handler import StartHandler
@@ -23,6 +24,7 @@ def main():
     business_signup_handler = BusinessSignupHandler()
     test_plan_handler = TestPlanHandler()
     business_login_handler = BusinessLoginHandler(auth)
+    create_test_plan_handler = CreateTestPlanHandler(auth)
     cancel_handler = CancelHandler()
 
     # Register handlers
@@ -33,6 +35,7 @@ def main():
     app.add_handler(business_login_handler.handler)
     app.add_handler(cancel_handler.handler)
     app.add_handler(test_plan_handler.handler)
+    app.add_handler(create_test_plan_handler.handler)
 
     print("Bot is running...")
     app.run_polling()
