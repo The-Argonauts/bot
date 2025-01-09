@@ -20,31 +20,29 @@ class TestPlanHandler:
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         test_plans = self.testPlanService.get_all_testplans()
 
-        if test_plans:
-            for test in test_plans:
-                message = (
-                    f"Test Plan ID: {test.id}\n"
-                    f"Name: {test.name}\n"
-                    f"Start Date: {test.start_date}\n"
-                    f"End Date: {test.end_date}"
-                )
-                await update.message.reply_text(message)
-
-            await update.message.reply_text("Please enter Plan Id.")
-            return PLAN_ID
-        else:
+        if not test_plans:
             await update.message.reply_text("No test plans available.")
+            return ConversationHandler.END
+
+        for test in test_plans:
+            message = (
+                f"Test Plan ID: {test.id}\n"
+                f"Name: {test.name}\n"
+                f"Start Date: {test.start_date}\n"
+                f"End Date: {test.end_date}"
+            )
+            await update.message.reply_text(message)
+
+        await update.message.reply_text("Please enter Plan Id.")
+        return PLAN_ID
         
 
     async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        print("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         plan_id = update.message.text.strip()
         context.user_data["id"] = plan_id
-        
+
         test_plans = self.testPlanService.get_all_testplans()
-        print(test_plans)
         selected_test_plan = next((test for test in test_plans if str(test.id) == context.user_data["id"]), None)
-        print(selected_test_plan)
 
         if selected_test_plan:
             message = (
