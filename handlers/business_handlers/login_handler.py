@@ -1,13 +1,14 @@
 from telegram import Update
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters, ContextTypes
 
+from filters.Authorization import Authorization
 from services.BusinessService import BusinessService
 # States
 USERNAME, PASSWORD = range(2)
 
 
 class BusinessLoginHandler:
-    def __init__(self):
+    def __init__(self, authorization: Authorization):
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("business_login", self.start)],
             states={
@@ -17,6 +18,7 @@ class BusinessLoginHandler:
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
         self.business_service = BusinessService()
+        self.authorization = authorization
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await update.message.reply_text("Please enter your username.")
@@ -30,7 +32,9 @@ class BusinessLoginHandler:
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["password"] = update.message.text
         try:
-            self.business_service.validate_business(context.user_data["username"], context.user_data["password"])
+            business_id = self.business_service.validate_business(context.user_data["username"], context.user_data["password"])
+            self.authorization.store_business_token(str(update.effective_user.id), business_id)
+
             await update.message.reply_text("you logged in successfully")
         except ValueError:
             await update.message.reply_text("login failed")

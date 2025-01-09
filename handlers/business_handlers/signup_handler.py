@@ -9,7 +9,7 @@ NAME, USERNAME, PASSWORD = range(3)
 class BusinessSignupHandler:
     def __init__(self):
         self.handler = ConversationHandler(
-            entry_points=[CommandHandler("user_signup", self.start)],
+            entry_points=[CommandHandler("business_signup", self.start)],
             states={
                 NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.name)],
                 USERNAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.username)],
