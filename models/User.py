@@ -17,3 +17,4 @@ class User(BaseModel):
     phoneNumber = Column(String, nullable=False)
 
     testplans: Mapped[List[TestPlan]] = relationship(secondary=association_table)
+    feedbacks: Mapped[List["Feedback"]] = relationship()
