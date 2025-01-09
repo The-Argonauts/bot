@@ -2,7 +2,7 @@ from telegram import Update
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters, ContextTypes
 from services.TestPlanService import TestPlanService
 
-PLAN_ID = range(1)
+PLAN_ID, APPLY = range(2)
 
 class TestPlanHandler:
     def __init__(self):
@@ -10,7 +10,7 @@ class TestPlanHandler:
             entry_points=[CommandHandler("test_plans", self.start)],
             states={
                 PLAN_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.id)],
-
+                APPLY: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.apply_for_plan)],
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
@@ -57,7 +57,21 @@ class TestPlanHandler:
             await update.message.reply_text("Invalid Test Plan ID. Please enter a valid ID.")
             return PLAN_ID
 
-        return ConversationHandler.END    
+        return ConversationHandler.END   
+
+
+    async def apply_for_plan(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        response = update.message.text.strip().lower()
+
+        if response == "yes":
+            await update.message.reply_text("You have applied for this test plan.")
+            return ConversationHandler.END
+        elif response == "no":
+            await update.message.reply_text("Please enter another Plan Id to view.")
+            return PLAN_ID
+        else:
+            await update.message.reply_text("Please reply with 'Yes' or 'No'.")
+            return APPLY
 
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
