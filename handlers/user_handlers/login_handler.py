@@ -1,6 +1,7 @@
 from telegram import Update
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters, ContextTypes
 from services.UserService import UserService
+import bcrypt
 # States
 USERNAME, PASSWORD = range(2)
 
@@ -27,7 +28,9 @@ class UserLoginHandler:
         return PASSWORD
 
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        context.user_data["password"] = update.message.text
+        entered_password = update.message.text
+        context.user_data["password"] = entered_password
+
         try:
             # Retrieve the stored hashed password for the given username
             stored_hashed_password = self.user_service.get_hashed_password(
