@@ -22,6 +22,10 @@ class TestPlanHandler:
 
         
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        if not self.authorization.authorize_user(str(update.effective_user.id)):
+            await update.message.reply_text("You need to login to as a user first.")
+            return ConversationHandler.END
+        
         test_plans = self.testPlanService.get_all_testplans()
 
         if not test_plans:
