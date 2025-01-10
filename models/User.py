@@ -4,7 +4,7 @@ from sqlalchemy.orm import relationship, Mapped
 
 from models.Base import BaseModel
 from models.TestPlan import TestPlan
-from models.test_plan_users import association_table
+from models.TestPlanUser import association_table
 
 
 class User(BaseModel):
