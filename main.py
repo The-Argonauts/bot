@@ -12,10 +12,12 @@ from handlers.user_handlers.logout_handler import UserLogoutHandler
 from handlers.user_handlers.signup_handler import UserSignupHandler
 from handlers.cancel_handler import CancelHandler
 from handlers.user_handlers.test_plan_handler import TestPlanHandler
+from handlers.user_handlers.active_test_plan_handler import ActiveTestPlanHandler
 
 
 def main():
-    app = ApplicationBuilder().token("7554909272:AAFj4k-SlOk3aNeDZzP5ucB4dqvonfNM0Gw").build()
+    app = ApplicationBuilder().token(
+        "7554909272:AAFj4k-SlOk3aNeDZzP5ucB4dqvonfNM0Gw").build()
     redis_client = RedisClient(host="127.0.0.1", port=6379)
     redis_client.connect()
     auth = Authorization(redis_client)
@@ -29,6 +31,7 @@ def main():
     business_login_handler = BusinessLoginHandler(auth)
     business_logout_handler = BusinessLogoutHandler(auth)
     create_test_plan_handler = CreateTestPlanHandler(auth)
+    active_test_plan_handler = ActiveTestPlanHandler(auth)
     cancel_handler = CancelHandler()
 
     # Register handlers
@@ -42,6 +45,7 @@ def main():
     app.add_handler(create_test_plan_handler.handler)
     app.add_handler(user_logout_handler.handler)
     app.add_handler(business_logout_handler.handler)
+    app.add_handler(active_test_plan_handler.handler)
 
     print("Bot is running...")
     app.run_polling()
