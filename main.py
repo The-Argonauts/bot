@@ -44,7 +44,11 @@ def main():
     app.add_handler(create_test_plan_handler.handler)
     app.add_handler(user_logout_handler.handler)
     app.add_handler(business_logout_handler.handler)
-    app.add_handler(profile_user_handler.handler)
+    # app.add_handler(profile_user_handler.handler)
+
+    # Add multiple handlers from ProfileHandler
+    for handler in profile_user_handler.handlers:
+        app.add_handler(handler)
 
     print("Bot is running...")
     app.run_polling()

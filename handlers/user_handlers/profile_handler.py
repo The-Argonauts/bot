@@ -4,18 +4,13 @@ from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, fi
 from filters.Authorization import Authorization
 from services.UserService import UserService
 
-HOME, EDITE = range(2)
 
 class ProfileHandler:
     def __init__(self, authorization: Authorization):
-        self.handler = ConversationHandler(
-            entry_points=[CommandHandler("show_profile", self.start)],
-            states={
-                HOME: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.home)],
-                # EDITE: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.edite)],
-            },
-            fallbacks=[CommandHandler("cancel", self.cancel)],
-        )
+        self.handlers = [
+            CommandHandler("show_profile", self.start),
+            CommandHandler("cancel", self.cancel),
+        ]
         self.user_service = UserService()
         self.authorization = authorization
         
@@ -33,13 +28,9 @@ class ProfileHandler:
             f"password: {user.password}"
         )
         await update.message.reply_text(message)
-
-    async def home(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        await update.message.reply_text("welcome to home")
-        return ConversationHandler.END
     
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        await update.message.reply_text("testplan creation cancelled.")
+        await update.message.reply_text("Welecome to home.")
         return ConversationHandler.END
 
         
