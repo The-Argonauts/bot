@@ -36,12 +36,11 @@ class UserSignupHandler:
 
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         plain_password = update.message.text
-        # Hash the password using bcrypt
+        
         hashed_password = bcrypt.hashpw(
             plain_password.encode('utf-8'), bcrypt.gensalt())
-        # Store the hashed password in user_data
+        
         context.user_data["password"] = hashed_password
-        print(hashed_password)
         await update.message.reply_text("Do you agree to the terms and conditions? (yes/no)")
         return AGREEMENT
 
