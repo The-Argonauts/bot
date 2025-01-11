@@ -3,7 +3,7 @@ from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, fi
 from services.UserService import UserService
 import bcrypt
 # States
-NAME, USERNAME, PASSWORD, AGREEMENT = range(3)
+NAME, USERNAME, PASSWORD, AGREEMENT = range(4)
 
 
 class UserSignupHandler:
