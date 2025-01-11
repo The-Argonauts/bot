@@ -3,6 +3,7 @@ from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, fi
 
 from filters.Authorization import Authorization
 from services.UserService import UserService
+import bcrypt
 # States
 USERNAME, PASSWORD = range(2)
 
@@ -31,16 +32,19 @@ class UserLoginHandler:
         return PASSWORD
 
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        context.user_data["password"] = update.message.text
-        try:
-            user_id = self.user_service.validate_user(context.user_data["username"], context.user_data["password"])
-            self.authorization.store_user_token(str(update.effective_user.id), user_id)
+        entered_password = update.message.text
+        context.user_data["password"] = entered_password
 
-            await update.message.reply_text("you logged in successfully")
-        except ValueError:
-            await update.message.reply_text("login failed")
+        
+        stored_hashed_password = self.user_service.get_hashed_password(
+            context.user_data["username"])
+        if bcrypt.checkpw(entered_password.encode('utf-8'), stored_hashed_password):
+            await update.message.reply_text("You logged in successfully")
+        else:
+            await update.message.reply_text("Login failed")
 
         return ConversationHandler.END
+
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await update.message.reply_text("login cancelled.")
