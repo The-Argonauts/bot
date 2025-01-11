@@ -74,10 +74,10 @@ class TestPlanHandler:
         response = update.message.text.strip().lower()
 
         if response == "yes":
-            print(update.effective_user.id)
             user_id = self.authorization.get_user_id(str(update.effective_user.id))
             test_plan_id = context.user_data["id"]
-            self.userSevice.sign_up_for_testplan(user_id, test_plan_id)
+            test_plan = self.testPlanService.get_testplan_by_id(test_plan_id)
+            self.userSevice.sign_up_for_testplan(user_id, test_plan)
 
             await update.message.reply_text("You have applied for this test plan.")
             return ConversationHandler.END

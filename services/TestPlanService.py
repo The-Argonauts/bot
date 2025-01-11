@@ -9,4 +9,7 @@ class TestPlanService:
 
     def get_all_testplans(self):
         return self.testplan_repo.get_all_testplans()
+    
+    def get_testplan_by_id(self, testplan_id: int):
+        return self.testplan_repo.get_testplan_by_id(testplan_id)
 
