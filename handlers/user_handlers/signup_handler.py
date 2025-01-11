@@ -1,8 +1,9 @@
 from telegram import Update
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters, ContextTypes
 from services.UserService import UserService
+import bcrypt
 # States
-NAME, USERNAME, PASSWORD, EMAIL, PHONE_NUMBER = range(5)
+NAME, USERNAME, PASSWORD, EMAIL, PHONE_NUMBER, AGREEMENT = range(6)
 
 
 
@@ -16,6 +17,7 @@ class UserSignupHandler:
                 PHONE_NUMBER: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.phone_number)],
                 EMAIL: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.email)],
                 PASSWORD: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.password)],
+                AGREEMENT: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.agreement)],
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
@@ -48,18 +50,29 @@ class UserSignupHandler:
     
 
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        context.user_data["password"] = update.message.text
-        await update.message.reply_text("Signup complete! Thank you.")
+        plain_password = update.message.text
+        
+        hashed_password = bcrypt.hashpw(
+            plain_password.encode('utf-8'), bcrypt.gensalt())
+        
+        context.user_data["password"] = hashed_password
+        await update.message.reply_text("Do you agree to the terms and conditions? (yes/no)")
+        return AGREEMENT
+    
 
-        self.user_service.create_user(
-            context.user_data["name"],
-            context.user_data["username"],
-            context.user_data["phone_number"],
-            context.user_data["email"],
-            context.user_data["password"],
-        )
+    async def agreement(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        if update.message.text.lower() == "yes":
+            self.user_service.create_user(
+                context.user_data["name"],
+                context.user_data["username"],
+                context.user_data["password"],
+            )
+            await update.message.reply_text("Signup complete! Thank you.")
+            return ConversationHandler.END
+        else:
+            await update.message.reply_text("Signup cancelled.")
+            return ConversationHandler.END
 
-        return ConversationHandler.END
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await update.message.reply_text("Signup cancelled.")
