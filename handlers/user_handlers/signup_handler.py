@@ -3,7 +3,7 @@ from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, fi
 from services.UserService import UserService
 import bcrypt
 # States
-NAME, USERNAME, PASSWORD = range(3)
+NAME, USERNAME, PASSWORD, AGREEMENT = range(3)
 
 
 class UserSignupHandler:
@@ -14,6 +14,7 @@ class UserSignupHandler:
                 NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.name)],
                 USERNAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.username)],
                 PASSWORD: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.password)],
+                AGREEMENT: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.agreement)],
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
@@ -41,16 +42,21 @@ class UserSignupHandler:
         # Store the hashed password in user_data
         context.user_data["password"] = hashed_password
         print(hashed_password)
-        # Send a confirmation message to the user
-        await update.message.reply_text("Signup complete! Thank you.")
+        await update.message.reply_text("Do you agree to the terms and conditions? (yes/no)")
+        return AGREEMENT
 
-        self.user_service.create_user(
-            context.user_data["name"],
-            context.user_data["username"],
-            context.user_data["password"],
-        )
-
-        return ConversationHandler.END
+    async def agreement(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        if update.message.text.lower() == "yes":
+            self.user_service.create_user(
+                context.user_data["name"],
+                context.user_data["username"],
+                context.user_data["password"],
+            )
+            await update.message.reply_text("Signup complete! Thank you.")
+            return ConversationHandler.END
+        else:
+            await update.message.reply_text("Signup cancelled.")
+            return ConversationHandler.END
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await update.message.reply_text("Signup cancelled.")
