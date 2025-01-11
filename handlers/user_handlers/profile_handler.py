@@ -12,7 +12,7 @@ class ProfileHandler:
             entry_points=[CommandHandler("show_profile", self.start)],
             states={
                 HOME: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.home)],
-                EDITE: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.edite)],
+                # EDITE: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.edite)],
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
@@ -27,12 +27,19 @@ class ProfileHandler:
         user = self.user_service.get_user(self.authorization.get_user_id(str(update.effective_user.id)))
         message = (
             f"Name: {user.name}\n"
-            f"Username: {selected_test_plan.username}\n"
-            f"Phone number: {selected_test_plan.phone_number}\n"
-            f"email: {selected_test_plan.email}\n"
-            f"password: {selected_test_plan.password}"
+            f"Username: {user.username}\n"
+            f"Phone number: {user.phone_number}\n"
+            f"email: {user.email}\n"
+            f"password: {user.password}"
         )
         await update.message.reply_text(message)
 
+    async def home(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        await update.message.reply_text("welcome to home")
+        return ConversationHandler.END
+    
+    async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        await update.message.reply_text("testplan creation cancelled.")
+        return ConversationHandler.END
 
         
