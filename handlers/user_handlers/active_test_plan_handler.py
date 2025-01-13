@@ -65,8 +65,8 @@ class ActiveTestPlanHandler:
         user_id = self.authorization.authorize_user(
             str(update.effective_user.id))
 
-        UserService.create_feedback(
-            user_id, plan_id, context.user_data['feedback'])
+        self.userService.create_feedback(
+            user_id, context.user_data['plan_id'], context.user_data['feedback'])
 
         await update.message.reply_text("Thank you for your feedback")
         return FEEDBACK
