@@ -8,10 +8,11 @@ from services.BusinessService import BusinessService
 # States
 NAME, DESCRIPTION, END_DATE, REWARD = range(4)
 
+
 class CreateTestPlanHandler:
     def __init__(self, authorization: Authorization):
         self.handler = ConversationHandler(
-            entry_points=[CommandHandler("create_testplan", self.start)],
+            entry_points=[CommandHandler("create_test_plan", self.start)],
             states={
                 NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.name)],
                 DESCRIPTION: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.description)],
@@ -48,7 +49,8 @@ class CreateTestPlanHandler:
 
     async def reward(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["reward"] = update.message.text
-        business_id = self.authorization.get_business_id(str(update.effective_user.id))
+        business_id = self.authorization.get_business_id(
+            str(update.effective_user.id))
         business = self.business_service.get_business(business_id)
 
         self.business_service.create_testplan(
@@ -56,13 +58,17 @@ class CreateTestPlanHandler:
             name=context.user_data["name"],
             description=context.user_data["description"],
             start_date=datetime.now(),
-            end_date=datetime.now() + timedelta(days=int(context.user_data["end_date"])),
+            end_date=datetime.now() +
+            timedelta(days=int(context.user_data["end_date"])),
             reward=context.user_data["reward"],
         )
 
-        await update.message.reply_text("Testplan created successfully.")
+        await update.message.reply_text("Test plan created successfully."
+                                        "\n"
+                                        "Commands:\n"
+                                        "\my_test_plans - show my test plans")
         return ConversationHandler.END
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        await update.message.reply_text("testplan creation cancelled.")
+        await update.message.reply_text("test plan creation cancelled.")
         return ConversationHandler.END

@@ -33,10 +33,19 @@ class UserLoginHandler:
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["password"] = update.message.text
         try:
-            user_id = self.user_service.validate_user(context.user_data["username"], context.user_data["password"])
-            self.authorization.store_user_token(str(update.effective_user.id), user_id)
+            user_id = self.user_service.validate_user(
+                context.user_data["username"], context.user_data["password"])
+            self.authorization.store_user_token(
+                str(update.effective_user.id), user_id)
 
-            await update.message.reply_text("you logged in successfully")
+            await update.message.reply_text("you logged in successfully\n"
+                                            "\n"
+                                            "Commands:\n"
+                                            "/show_user_profile - Show my profile\n"
+                                            "/test_plans - Show all test plans\n"
+                                            "/active_test_plans - Show all active test plans\n"
+                                            "/user_logout - Log out from user profile\n"
+                                            )
         except ValueError:
             await update.message.reply_text("login failed")
 

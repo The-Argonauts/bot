@@ -32,10 +32,19 @@ class BusinessLoginHandler:
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["password"] = update.message.text
         try:
-            business_id = self.business_service.validate_business(context.user_data["username"], context.user_data["password"])
-            self.authorization.store_business_token(str(update.effective_user.id), business_id)
+            business_id = self.business_service.validate_business(
+                context.user_data["username"], context.user_data["password"])
+            self.authorization.store_business_token(
+                str(update.effective_user.id), business_id)
 
-            await update.message.reply_text("you logged in successfully")
+            await update.message.reply_text("you logged in successfully\n"
+                                            "\n"
+                                            "Commands:\n"
+                                            "/show_business_profile - Show my profile\n"
+                                            "/create_test_plan - Create a test plan\n"
+                                            "/my_test_plans - Show all my test plans\n"
+                                            "/business_logout - Log out from business profile\n"
+                                            )
         except ValueError:
             await update.message.reply_text("login failed")
 

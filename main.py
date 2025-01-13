@@ -42,7 +42,7 @@ def main():
     business_test_plan_handler = BusinessTestPlanHandler(auth)
 
     business_profile_handler = BusinessProfileHandler(auth)
-    
+
     cancel_handler = CancelHandler()
 
     # Register handlers
