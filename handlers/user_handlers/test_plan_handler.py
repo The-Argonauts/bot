@@ -78,7 +78,11 @@ class TestPlanHandler:
             test_plan_id = context.user_data["test_plan_id"]
             self.user_service.sign_up_for_testplan(user_id, test_plan_id)
 
-            await update.message.reply_text("You have applied for this test plan.")
+            await update.message.reply_text("You have applied for this test plan.\n"
+                                            "\n"
+                                            "Commands:\n"
+                                            "/active_test_plans - show active test plans")
+
             return ConversationHandler.END
         elif response == "no":
             await update.message.reply_text("Please enter another Test Plan Id to view.")

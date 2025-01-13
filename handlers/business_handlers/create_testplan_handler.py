@@ -63,9 +63,12 @@ class CreateTestPlanHandler:
             reward=context.user_data["reward"],
         )
 
-        await update.message.reply_text("Testplan created successfully.")
+        await update.message.reply_text("Test plan created successfully."
+                                        "\n"
+                                        "Commands:\n"
+                                        "\my_test_plans - show my test plans")
         return ConversationHandler.END
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        await update.message.reply_text("testplan creation cancelled.")
+        await update.message.reply_text("test plan creation cancelled.")
         return ConversationHandler.END

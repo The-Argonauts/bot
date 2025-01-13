@@ -5,7 +5,6 @@ from services.UserService import UserService
 NAME, USERNAME, PASSWORD, EMAIL, PHONE_NUMBER, AGREEMENT = range(6)
 
 
-
 class UserSignupHandler:
     def __init__(self):
         self.handler = ConversationHandler(
@@ -35,24 +34,22 @@ class UserSignupHandler:
         context.user_data["username"] = update.message.text
         await update.message.reply_text("Please enter your phone number.")
         return PHONE_NUMBER
-    
 
     async def phone_number(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["phone_number"] = update.message.text
         await update.message.reply_text("Please enter your E-mail.")
         return EMAIL
-    
+
     async def email(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["email"] = update.message.text
         await update.message.reply_text("Please enter your password.")
         return PASSWORD
-    
 
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["password"] = update.message.text
         await update.message.reply_text("Do you agree to the terms and conditions? (yes/no)\nBy participating as a beta tester, you agree to provide feedback on the product and understand that the software may contain bugs or incomplete features. You also agree not to share any confidential information or content provided during the testing phase. Your participation is voluntary, and the developers reserve the right to terminate your access at any time.")
         return AGREEMENT
-    
+
     async def agreement(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         if update.message.text.lower() == "yes":
             self.user_service.create_user(
@@ -63,16 +60,15 @@ class UserSignupHandler:
                 context.user_data["password"],
             )
             await update.message.reply_text(
-    "Signup complete! Thank you.\n\n"
-    "Commands:\n"
-    "/user_login - Login as a user\n"
-    "/start - Home"
-        )
+                "Signup completed! Thank you.\n\n"
+                "Commands:\n"
+                "/user_login - Login as a user\n"
+                "/start - Home"
+            )
             return ConversationHandler.END
         else:
             await update.message.reply_text("Signup cancelled.")
             return ConversationHandler.END
-
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await update.message.reply_text("Signup cancelled.")

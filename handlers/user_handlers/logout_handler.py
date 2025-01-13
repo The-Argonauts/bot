@@ -2,6 +2,7 @@ from telegram import Update
 from telegram.ext import ConversationHandler, CommandHandler, ContextTypes
 from filters.Authorization import Authorization
 
+
 class UserLogoutHandler:
     def __init__(self, authorization: Authorization):
         self.handler = ConversationHandler(
@@ -16,7 +17,11 @@ class UserLogoutHandler:
             await update.message.reply_text("You are not logged in.")
             return ConversationHandler.END
         self.authorization.delete_user_token(str(update.effective_user.id))
-        await update.message.reply_text("You are logged out.")
+        await update.message.reply_text("You are logged out."
+                                        "\n"
+                                        "Commands:\n"
+                                        "\active_test_plans - show active test plans"
+                                        "\start - Return to start page")
         return ConversationHandler.END
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
