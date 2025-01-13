@@ -14,6 +14,9 @@ from handlers.cancel_handler import CancelHandler
 from handlers.user_handlers.test_plan_handler import TestPlanHandler
 from handlers.user_handlers.active_test_plan_handler import ActiveTestPlanHandler
 from handlers.user_handlers.profile_handler import ProfileHandler
+
+from handlers.business_handlers.business_test_plan_handler import BusinessTestPlanHandler
+
 from handlers.business_handlers.business_profile_handler import BusinessProfileHandler
 
 
@@ -35,7 +38,11 @@ def main():
     create_test_plan_handler = CreateTestPlanHandler(auth)
     active_test_plan_handler = ActiveTestPlanHandler(auth)
     profile_user_handler = ProfileHandler(auth)
+
+    business_test_plan_handler = BusinessTestPlanHandler(auth)
+
     business_profile_handler = BusinessProfileHandler(auth)
+    
     cancel_handler = CancelHandler()
 
     # Register handlers
@@ -50,6 +57,7 @@ def main():
     app.add_handler(user_logout_handler.handler)
     app.add_handler(business_logout_handler.handler)
     app.add_handler(active_test_plan_handler.handler)
+    app.add_handler(business_test_plan_handler.handler)
     # app.add_handler(profile_user_handler.handler)
 
     # Add multiple handlers from ProfileHandler
