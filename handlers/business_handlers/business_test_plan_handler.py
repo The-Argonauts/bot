@@ -10,7 +10,7 @@ from services.TestPlanService import TestPlanService
 PLAN_ID, FEEDBACK = range(2)
 
 
-class TestPlanHandler:
+class BusinessTestPlanHandler:
     def __init__(self, authorization: Authorization):
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("all_test_plans", self.start)],
@@ -33,9 +33,12 @@ class TestPlanHandler:
         business_test_plans = self.businessService.get_business_testplans(
             self.authorization.get_business_id(
                 str(update.effective_user.id)))
+        
+        if not business_test_plans:
+            await update.message.reply_text("No test plans available.")
+            return ConversationHandler.END
 
         for test_plan in business_test_plans:
-
             message = (
                 f"Test Plan ID: {test_plan.id}\n"
                 f"Name: {test_plan.name}\n"
