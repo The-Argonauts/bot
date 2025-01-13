@@ -6,6 +6,7 @@ from services.TestPlanService import TestPlanService
 
 PLAN_ID, APPLY = range(2)
 
+
 class TestPlanHandler:
     def __init__(self, authorization: Authorization):
         self.handler = ConversationHandler(
@@ -21,12 +22,11 @@ class TestPlanHandler:
         self.testplan_service = TestPlanService()
         self.authorization = authorization
 
-        
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         if not self.authorization.authorize_user(str(update.effective_user.id)):
             await update.message.reply_text("You need to log in to the user portal first.")
             return ConversationHandler.END
-        
+
         test_plans = self.testPlanService.get_all_testplans()
 
         if not test_plans:
@@ -42,15 +42,15 @@ class TestPlanHandler:
             )
             await update.message.reply_text(message)
 
-        await update.message.reply_text("Please enter Plan Id.")
+        await update.message.reply_text("Please enter Test Plan Id.")
         return PLAN_ID
-        
 
     async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["test_plan_id"] = update.message.text.strip()
 
         test_plans = self.testPlanService.get_all_testplans()
-        selected_test_plan = next((test for test in test_plans if str(test.id) == context.user_data["test_plan_id"]), None)
+        selected_test_plan = next((test for test in test_plans if str(
+            test.id) == context.user_data["test_plan_id"]), None)
 
         if selected_test_plan:
             message = (
@@ -67,26 +67,25 @@ class TestPlanHandler:
             await update.message.reply_text("Invalid Test Plan ID. Please enter a valid ID.")
             return PLAN_ID
 
-        # return ConversationHandler.END   
-
+        # return ConversationHandler.END
 
     async def apply_for_plan(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         response = update.message.text.strip().lower()
 
         if response == "yes":
-            user_id = self.authorization.get_user_id(str(update.effective_user.id))
+            user_id = self.authorization.get_user_id(
+                str(update.effective_user.id))
             test_plan_id = context.user_data["test_plan_id"]
             self.user_service.sign_up_for_testplan(user_id, test_plan_id)
 
             await update.message.reply_text("You have applied for this test plan.")
             return ConversationHandler.END
         elif response == "no":
-            await update.message.reply_text("Please enter another Plan Id to view.")
+            await update.message.reply_text("Please enter another Test Plan Id to view.")
             return PLAN_ID
         else:
             await update.message.reply_text("Please reply with 'Yes' or 'No'.")
             return APPLY
-
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await update.message.reply_text("Test plans cancelled.")
