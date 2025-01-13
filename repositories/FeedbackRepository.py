@@ -1,7 +1,6 @@
 from repositories.BaseRepository import BaseRepository
 from models.Feedback import Feedback
 
-# repository/test_plan_repository.py
 class FeedbackRepository(BaseRepository):
     def get_user_feedbacks(self, user_id):
         return self.session.query(Feedback).filter(Feedback.user_id == user_id).all()
