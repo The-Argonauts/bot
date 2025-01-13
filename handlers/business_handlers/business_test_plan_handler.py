@@ -33,7 +33,7 @@ class BusinessTestPlanHandler:
         business_test_plans = self.businessService.get_business_testplans(
             self.authorization.get_business_id(
                 str(update.effective_user.id)))
-        
+
         if not business_test_plans:
             await update.message.reply_text("No test plans available.")
             return ConversationHandler.END
@@ -52,12 +52,16 @@ class BusinessTestPlanHandler:
     async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["plan_id"] = update.message.text()
 
-        # feedbacks = self.testPlanService.get_feedbacks(
-        #     context.user_data["plan_id"])
+        feedbacks = self.testPlanService.get_feedback(
+            context.user_data["plan_id"])
 
-        # context.user_data["feedbacks"] = feedbacks
-        # await update.message.reply_text("Displaying feedbacks for the selected test plan.")
-        # return FEEDBACK
+        if not feedbacks:
+            await update.message.reply_text("No feedbacks for this test plan is available.")
+            return ConversationHandler.END
+
+        context.user_data["feedbacks"] = feedbacks
+        await update.message.reply_text("Displaying feedbacks for the selected test plan.")
+        return FEEDBACK
 
     #  async def show_feedbacks(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 
