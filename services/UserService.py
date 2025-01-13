@@ -12,7 +12,8 @@ class UserService:
         user = self.user_repo.get_by_username(username)
         if user:
             raise ValueError("Username already exists.")
-        user = User(name=name, username=username, phone_number=phone_number, email=email, password=password)
+        user = User(name=name, username=username,
+                    phone_number=phone_number, email=email, password=password)
         self.user_repo.create(user)
 
     def get_user(self, user_id: int):
