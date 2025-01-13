@@ -8,7 +8,7 @@ from services.BusinessService import BusinessService
 from services.TestPlanService import TestPlanService
 from services.UserService import UserService
 
-PLAN_ID, FEEDBACK = range(2)
+PLAN_ID = range(1)
 
 
 class BusinessTestPlanHandler:
@@ -17,11 +17,11 @@ class BusinessTestPlanHandler:
             entry_points=[CommandHandler("all_test_plans", self.start)],
             states={
                 PLAN_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.select_id)],
-                # FEEDBACK: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.show_feedback)],
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
 
+        self.userService = UserService()
         self.testPlanService = TestPlanService()
         self.authorization = authorization
         self.businessService = BusinessService()
@@ -51,7 +51,7 @@ class BusinessTestPlanHandler:
         return PLAN_ID
 
     async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        context.user_data["plan_id"] = update.message.text()
+        context.user_data["plan_id"] = update.message.text
 
         feedbacks = self.testPlanService.get_feedback(
             context.user_data["plan_id"])

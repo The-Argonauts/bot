@@ -69,7 +69,7 @@ class ActiveTestPlanHandler:
             user_id, context.user_data['plan_id'], context.user_data['feedback'])
 
         await update.message.reply_text("Thank you for your feedback")
-        return FEEDBACK
+        return ConversationHandler.END
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await update.message.reply_text("Active test plans cancelled.")
