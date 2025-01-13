@@ -32,7 +32,7 @@ def main():
     user_login_handler = UserLoginHandler(auth)
     user_logout_handler = UserLogoutHandler(auth)
     business_signup_handler = BusinessSignupHandler()
-    test_plan_handler = TestPlanHandler()
+    test_plan_handler = TestPlanHandler(auth)
     business_login_handler = BusinessLoginHandler(auth)
     business_logout_handler = BusinessLogoutHandler(auth)
     create_test_plan_handler = CreateTestPlanHandler(auth)
