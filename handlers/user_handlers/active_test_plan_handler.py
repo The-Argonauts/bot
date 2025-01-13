@@ -50,11 +50,23 @@ class ActiveTestPlanHandler:
                 )
             await update.message.reply_text(message)
         await update.message.reply_text("Please enter the Test Plan ID you want to provide feedback for.")
+        context.user_data['active_plans'] = active_plans
 
         return PLAN_ID
 
     async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        return ConversationHandler.END
+        context.user_data['plan_id'] = update.message.text
+
+        await update.message.reply_text("Please provide your feedback for the selected Test Plan.")
+        return FEEDBACK
+
+    async def give_feedback(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        context.user_data['feedback'] = update.message.text
+        user_id = self.authorization.authorize_user(
+            str(update.effective_user.id))
+
+        await update.message.reply_text("Thank you for your feedback")
+        return FEEDBACK
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await update.message.reply_text("Active test plans cancelled.")
