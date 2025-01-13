@@ -8,3 +8,6 @@ class TestPlanRepository(BaseRepository):
 
     def get_all_testplans(self):
         return self.session.query(TestPlan).all()
+
+    def get_by_id(self, testplan_id: int):
+        return self.session.query(TestPlan).filter(TestPlan.id == testplan_id).first()

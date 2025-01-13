@@ -3,6 +3,7 @@ from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, fi
 from services.TestPlanService import TestPlanService
 from filters.Authorization import Authorization
 from services.UserService import UserService
+from services.TestPlanService import TestPlanService
 
 PLAN_ID, APPLY = range(2)
 
@@ -18,6 +19,7 @@ class TestPlanHandler:
         )
         self.testPlanService = TestPlanService()
         self.user_service = UserService()
+        self.testplan_service = TestPlanService()
         self.authorization = authorization
 
         
@@ -74,7 +76,8 @@ class TestPlanHandler:
 
         if response == "yes":
             user_id = self.authorization.get_user_id(str(update.effective_user.id))
-            self.user_service.sign_up_for_testplan(user_id, context.user_data["test_plan_id"])
+            testplan = self.testPlanService.get_by_id(context.user_data["test_plan_id"])
+            self.user_service.sign_up_for_testplan(user_id, testplan)
 
             await update.message.reply_text("You have applied for this test plan.")
             return ConversationHandler.END

@@ -2,6 +2,7 @@ from repositories.UserRepository import UserRepository
 from repositories.FeedbackRepository import FeedbackRepository
 from models.User import User
 from models.Feedback import Feedback
+from models.TestPlan import TestPlan
 from configs.database import SessionLocal
 
 
@@ -31,9 +32,9 @@ class UserService:
             raise ValueError("Username or Password is not valid")
         return user.id
 
-    def sign_up_for_testplan(self, user_id: int, testplan_id: int):
+    def sign_up_for_testplan(self, user_id: int, testplan: TestPlan):
         user = self.get_user(user_id)
-        self.user_repo.add_testplan(user, testplan_id)
+        self.user_repo.add_testplan(user, testplan)
 
     def get_user_testplans(self, user_id: int):
         user = self.get_user(user_id)

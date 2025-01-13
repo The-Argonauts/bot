@@ -12,5 +12,8 @@ class TestPlanService:
     def get_all_testplans(self):
         return self.testplan_repo.get_all_testplans()
 
-    def get_feedback(self, id):
-        return self.feedback_repo.get_testplan_feedbacks(id)
+    def get_feedback(self, testplan_id):
+        return self.testplan_repo.get_testplan_feedbacks(testplan_id)
+    
+    def get_by_id(self, testplan_id):
+        return self.testplan_repo.get_by_id(testplan_id)
