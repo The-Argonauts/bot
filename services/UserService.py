@@ -1,5 +1,7 @@
 from repositories.UserRepository import UserRepository
+from repositories.FeedbackRepository import FeedbackRepository
 from models.User import User
+from models.Feedback import Feedback
 from configs.database import SessionLocal
 
 
@@ -7,6 +9,7 @@ class UserService:
     def __init__(self):
         self.db_session = SessionLocal()
         self.user_repo = UserRepository(self.db_session)
+        self.feedback_repo = FeedbackRepository(self.db_session)
 
     def create_user(self, name: str, username: str, phone_number: str, email: str, password: str):
         user = self.user_repo.get_by_username(username)
@@ -34,3 +37,6 @@ class UserService:
     def get_user_testplans(self, user_id: int):
         user = self.get_user(user_id)
         return user.testplans
+    
+    def create_feed_back(self, user_id: int, test_plan_id: int, content: str):
+        self.feedback_repo.create_user_feedback(user_id, test_plan_id, content) 
