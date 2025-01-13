@@ -44,6 +44,7 @@ class UserLoginHandler:
                                             "/show_user_profile - Show my profile\n"
                                             "/test_plans - Show all test plans\n"
                                             "/active_test_plans - Show all active test plans\n"
+                                            "/user_logout - Log out from user profile\n"
                                             )
         except ValueError:
             await update.message.reply_text("login failed")
