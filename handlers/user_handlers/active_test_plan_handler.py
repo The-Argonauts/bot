@@ -14,7 +14,7 @@ class ActiveTestPlanHandler:
             entry_points=[CommandHandler("active_test_plans", self.start)],
             states={
                 PLAN_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.select_id)],
-                # FEEDBACK: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.give_feedback)],
+                FEEDBACK: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.give_feedback)],
 
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
@@ -62,7 +62,7 @@ class ActiveTestPlanHandler:
 
     async def give_feedback(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data['feedback'] = update.message.text
-        user_id = self.authorization.authorize_user(
+        user_id = self.authorization.get_user_id(
             str(update.effective_user.id))
 
         self.userService.create_feedback(
