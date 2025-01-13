@@ -9,7 +9,7 @@ from services.TestPlanService import TestPlanService
 PLAN_ID, FEEDBACK = range(2)
 
 
-class TestPlanHandler:
+class BusinessTestPlanHandler:
     def __init__(self, authorization: Authorization):
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("all_test_plans", self.start)],
