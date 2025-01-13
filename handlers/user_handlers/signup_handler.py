@@ -62,7 +62,12 @@ class UserSignupHandler:
                 context.user_data["email"],
                 context.user_data["password"],
             )
-            await update.message.reply_text("Signup complete! Thank you.")
+            await update.message.reply_text(
+    "Signup complete! Thank you.\n\n"
+    "Commands:\n"
+    "/user_login - Login as a user\n"
+    "/start - Home"
+        )
             return ConversationHandler.END
         else:
             await update.message.reply_text("Signup cancelled.")
