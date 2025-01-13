@@ -3,6 +3,7 @@ from models.Business import Business
 from configs.database import SessionLocal
 from models.TestPlan import TestPlan
 
+
 class BusinessService:
     def __init__(self):
         self.db_session = SessionLocal()
@@ -22,7 +23,8 @@ class BusinessService:
         return business
 
     def create_testplan(self, business: Business, name: str, description: str, start_date: str, end_date: str, reward: str):
-        testplan = TestPlan(name=name, description=description, start_date=start_date, end_date=end_date, reward=reward, business=business)
+        testplan = TestPlan(name=name, description=description, start_date=start_date,
+                            end_date=end_date, reward=reward, business=business)
         self.business_repo.create_testplan(business, testplan)
 
     def validate_business(self, username: str, password: str):
@@ -30,3 +32,7 @@ class BusinessService:
         if (not business) or not business.validate_password(password):
             raise ValueError("Username or Password is not valid")
         return business.id
+
+    def get_business_testplans(self, user_id: int):
+        business = self.get_business(user_id)
+        return business.test_plans
