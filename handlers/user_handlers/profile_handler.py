@@ -25,7 +25,6 @@ class ProfileHandler:
             f"Username: {user.username}\n"
             f"Phone number: {user.phone_number}\n"
             f"email: {user.email}\n"
-            f"password: {user.password}"
         )
         await update.message.reply_text(message)
     

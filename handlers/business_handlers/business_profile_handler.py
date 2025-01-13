@@ -23,7 +23,6 @@ class BusinessProfileHandler:
         message = (
             f"Name: {business.name}\n"
             f"Username: {business.username}\n"
-            f"password: {business.password}"
         )
         await update.message.reply_text(message)
     
