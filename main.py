@@ -23,7 +23,7 @@ from handlers.business_handlers.business_profile_handler import BusinessProfileH
 def main():
     app = ApplicationBuilder().token(
         "7554909272:AAFj4k-SlOk3aNeDZzP5ucB4dqvonfNM0Gw").build()
-    redis_client = RedisClient(host="127.0.0.1", port=6379)
+    redis_client = RedisClient(host="redis", port=6379)
     redis_client.connect()
     auth = Authorization(redis_client)
 
