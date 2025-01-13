@@ -6,6 +6,7 @@ from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, fi
 from filters.Authorization import Authorization
 from services.BusinessService import BusinessService
 from services.TestPlanService import TestPlanService
+from services.UserService import UserService
 
 PLAN_ID, FEEDBACK = range(2)
 
@@ -59,11 +60,14 @@ class BusinessTestPlanHandler:
             await update.message.reply_text("No feedbacks for this test plan is available.")
             return ConversationHandler.END
 
-        context.user_data["feedbacks"] = feedbacks
-        await update.message.reply_text("Displaying feedbacks for the selected test plan.")
-        return FEEDBACK
-
-    #  async def show_feedbacks(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        for feedback in feedbacks:
+            user = self.userService.get_user(feedback.user_id)
+            message = (
+                f"Name: {user.name}\n"
+                f"Feedback: {feedback.content}"
+            )
+            await update.message.reply_text(message)
+        return ConversationHandler.END
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         await update.message.reply_text("Operation cancelled.")
