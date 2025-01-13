@@ -11,7 +11,7 @@ from services.UserService import UserService
 PLAN_ID = range(1)
 
 
-class BusinessTestPlanHandler:
+class ViewTestUsersHandler:
     def __init__(self, authorization: Authorization):
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("signed_up_testusers", self.start)],
