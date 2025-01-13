@@ -26,28 +26,32 @@ class ActiveTestPlanHandler:
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         if not self.authorization.authorize_user(str(update.effective_user.id)):
-            await update.message.reply_text("You need to login to user portal's first.")
+            await update.message.reply_text("You need to log in to the user portal first.")
             return ConversationHandler.END
 
         test_plans = self.userService.get_user_testplans(
             self.authorization.get_user_id(str(update.effective_user.id)))
 
         current_date = datetime.now().date()
+        active_plans = [
+            test_plan for test_plan in test_plans
+            if test_plan.start_date <= current_date and test_plan.end_date >= current_date
+        ]
 
-        for test_plan in test_plans:
-
-            if test_plan.start_date <= current_date and test_plan.end_date >= current_date:
+        if not active_plans:
+            await update.message.reply_text("There are no active test plans available.")
+        else:
+            for test_plan in active_plans:
                 message = (
                     f"Test Plan ID: {test_plan.id}\n"
                     f"Name: {test_plan.name}\n"
                     f"Start Date: {test_plan.start_date}\n"
                     f"End Date: {test_plan.end_date}"
                 )
+            await update.message.reply_text(message)
+        await update.message.reply_text("Please enter the Test Plan ID you want to provide feedback for.")
 
-                await update.message.reply_text(message)
-
-            await update.message.reply_text("Please enter the Test Plan ID you want to provide feedback for.")
-        return ConversationHandler.END
+        return PLAN_ID
 
     async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         return ConversationHandler.END
