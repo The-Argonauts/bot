@@ -14,6 +14,7 @@ from handlers.cancel_handler import CancelHandler
 from handlers.user_handlers.test_plan_handler import TestPlanHandler
 from handlers.user_handlers.active_test_plan_handler import ActiveTestPlanHandler
 from handlers.user_handlers.profile_handler import ProfileHandler
+from handlers.business_handlers.business_profile_handler import BusinessProfileHandler
 
 
 def main():
@@ -34,6 +35,7 @@ def main():
     create_test_plan_handler = CreateTestPlanHandler(auth)
     active_test_plan_handler = ActiveTestPlanHandler(auth)
     profile_user_handler = ProfileHandler(auth)
+    business_profile_handler = BusinessProfileHandler(auth)
     cancel_handler = CancelHandler()
 
     # Register handlers
@@ -52,6 +54,9 @@ def main():
 
     # Add multiple handlers from ProfileHandler
     for handler in profile_user_handler.handlers:
+        app.add_handler(handler)
+
+    for handler in business_profile_handler.handlers:
         app.add_handler(handler)
 
     print("Bot is running...")
