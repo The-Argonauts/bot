@@ -19,6 +19,7 @@ class ActiveTestPlanHandler:
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
+
         self.testPlanService = TestPlanService()
         self.authorization = authorization
         self.userService = UserService()
@@ -28,23 +29,14 @@ class ActiveTestPlanHandler:
             await update.message.reply_text("You need to login to user portal's first.")
             return ConversationHandler.END
 
-        print("erjfioerjgiejgioerjgierjgirjgiorejgiojgiogjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj")
-
         test_plans = self.userService.get_user_testplans(
             self.authorization.get_user_id(str(update.effective_user.id)))
-        print("erjfioerjgiejgioerjgierjgirjgiorejgiojgiogjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj", test_plans)
-        print("erjfioerjgiejgioerjgierjgirjgiorejgiojgiogjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj", type(
-            test_plans))
 
         current_date = datetime.now().date()
 
         for test_plan in test_plans:
 
-            print(
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-
             if test_plan.start_date <= current_date and test_plan.end_date >= current_date:
-                print("dodoodododododoododoodododoodo")
                 message = (
                     f"Test Plan ID: {test_plan.id}\n"
                     f"Name: {test_plan.name}\n"
@@ -54,23 +46,7 @@ class ActiveTestPlanHandler:
 
                 await update.message.reply_text(message)
 
-    # test_plans = self.testPlanService.get_all_testplans()
-
-    # if not test_plans:
-    #     await update.message.reply_text("No test plans available.")
-    #     return ConversationHandler.END
-
-    # for test in test_plans:
-    #     message = (
-    #         f"Test Plan ID: {test.id}\n"
-    #         f"Name: {test.name}\n"
-    #         f"Start Date: {test.start_date}\n"
-    #         f"End Date: {test.end_date}"
-    #     )
-    #     await update.message.reply_text(message)
-
-    #     await update.message.reply_text("Please enter Plan Id.")
-    #     return PLAN_ID
+            await update.message.reply_text("Please enter the Test Plan ID you want to provide feedback for.")
         return ConversationHandler.END
 
     async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
