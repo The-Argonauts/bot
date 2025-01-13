@@ -2,29 +2,27 @@ from telegram import Update
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters, ContextTypes
 
 from filters.Authorization import Authorization
-from services.UserService import UserService
+from services.BusinessService import BusinessService
 
 
-class ProfileHandler:
+class BusinessProfileHandler:
     def __init__(self, authorization: Authorization):
         self.handlers = [
-            CommandHandler("show_profile", self.start),
+            CommandHandler("show_business_profile", self.start),
             CommandHandler("cancel", self.cancel),
         ]
-        self.user_service = UserService()
+        self.business_service = BusinessService()
         self.authorization = authorization
         
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        if not self.authorization.authorize_user(str(update.effective_user.id)):
-            await update.message.reply_text("You need to login as a user first.")
+        if not self.authorization.authorize_business(str(update.effective_user.id)):
+            await update.message.reply_text("You need to login as a business first.")
             return ConversationHandler.END
         
-        user = self.user_service.get_user(self.authorization.get_user_id(str(update.effective_user.id)))
+        business = self.business_service.get_business(self.authorization.get_business_id(str(update.effective_user.id)))
         message = (
-            f"Name: {user.name}\n"
-            f"Username: {user.username}\n"
-            f"Phone number: {user.phone_number}\n"
-            f"email: {user.email}\n"
+            f"Name: {business.name}\n"
+            f"Username: {business.username}\n"
         )
         await update.message.reply_text(message)
     
