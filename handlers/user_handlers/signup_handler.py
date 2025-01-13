@@ -36,14 +36,27 @@ class UserSignupHandler:
         return PHONE_NUMBER
 
     async def phone_number(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        context.user_data["phone_number"] = update.message.text
-        await update.message.reply_text("Please enter your E-mail.")
-        return EMAIL
+        phone_number = update.message.text.strip()  # Get the phone number and strip any extra spaces.
+    
+        if len(phone_number) == 11 and phone_number.isdigit():
+            context.user_data["phone_number"] = phone_number
+            await update.message.reply_text("Please enter your E-mail.")
+            return EMAIL
+        else:
+            await update.message.reply_text("Invalid phone number. Please enter a valid 11-digit phone number.")
+            return PHONE_NUMBER
+
 
     async def email(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        context.user_data["email"] = update.message.text
-        await update.message.reply_text("Please enter your password.")
-        return PASSWORD
+        email = update.message.text.strip()  
+
+        if "@" in email:
+            context.user_data["email"] = email
+            await update.message.reply_text("Please enter your password.")
+            return PASSWORD
+        else:
+            await update.message.reply_text("Invalid email address. Please enter a valid email.")
+            return EMAIL
 
     async def password(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["password"] = update.message.text
