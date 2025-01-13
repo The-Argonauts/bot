@@ -8,12 +8,12 @@ from models.Feedback import Feedback
 class TestPlan(BaseModel):
     __tablename__ = "test_plans"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String, nullable=False)
-    description = Column(String, nullable=False)
+    name = Column(String(50), nullable=False)
+    description = Column(String(150), nullable=False)
     start_date = Column(Date, nullable=False)
     end_date = Column(Date, nullable=False)
-    status = Column(String, nullable=False)
-    reward = Column(String, nullable=False)
+    status = Column(String(50), nullable=False)
+    reward = Column(String(100), nullable=False)
 
     business_id: Mapped[int] = mapped_column(ForeignKey("businesses.id"))
     feedbacks: Mapped["Feedback"] = relationship()
