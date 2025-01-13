@@ -27,6 +27,6 @@ class BusinessService:
 
     def validate_business(self, username: str, password: str):
         business = self.business_repo.get_by_username(username)
-        if (not business) or business.password != password:
+        if (not business) or not business.validate_password(password):
             raise ValueError("Username or Password is not valid")
         return business.id

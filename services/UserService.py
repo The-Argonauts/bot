@@ -27,7 +27,7 @@ class UserService:
 
     def validate_user(self, username: str, password: str):
         user = self.user_repo.get_by_username(username)
-        if (not user) or user.password != password:
+        if (not user) or not user.validate_password(password):
             raise ValueError("Username or Password is not valid")
         return user.id
 
