@@ -32,9 +32,12 @@ class BusinessTestPlanHandler:
         business_test_plans = self.businessService.get_business_testplans(
             self.authorization.get_business_id(
                 str(update.effective_user.id)))
+        
+        if not business_test_plans:
+            await update.message.reply_text("No test plans available.")
+            return ConversationHandler.END
 
         for test_plan in business_test_plans:
-
             message = (
                 f"Test Plan ID: {test_plan.id}\n"
                 f"Name: {test_plan.name}\n"
