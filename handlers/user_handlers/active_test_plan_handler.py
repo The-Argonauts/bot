@@ -49,8 +49,8 @@ class ActiveTestPlanHandler:
                     f"End Date: {test_plan.end_date}"
                 )
             await update.message.reply_text(message)
-        await update.message.reply_text("Please enter the Test Plan ID you want to provide feedback for.")
-        context.user_data['active_plans'] = active_plans
+            await update.message.reply_text("Please enter the Test Plan ID you want to provide feedback for.")
+            context.user_data['active_plans'] = active_plans
 
         return PLAN_ID
 
