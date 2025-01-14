@@ -14,7 +14,7 @@ PLAN_ID = range(1)
 class BusinessTestPlanHandler:
     def __init__(self, authorization: Authorization):
         self.handler = ConversationHandler(
-            entry_points=[CommandHandler("all_test_plans", self.start)],
+            entry_points=[CommandHandler("my_test_plans", self.start)],
             states={
                 PLAN_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.select_id)],
             },
