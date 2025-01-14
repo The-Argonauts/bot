@@ -1,5 +1,5 @@
 from telegram.ext import ApplicationBuilder
-
+from dotenv import load_dotenv
 from configs.redis import RedisClient
 from filters.Authorization import Authorization
 from handlers.business_handlers.create_testplan_handler import CreateTestPlanHandler
@@ -14,16 +14,23 @@ from handlers.cancel_handler import CancelHandler
 from handlers.user_handlers.test_plan_handler import TestPlanHandler
 from handlers.user_handlers.active_test_plan_handler import ActiveTestPlanHandler
 from handlers.user_handlers.profile_handler import ProfileHandler
-
+import os
 from handlers.business_handlers.business_test_plan_handler import BusinessTestPlanHandler
 
 from handlers.business_handlers.business_profile_handler import BusinessProfileHandler
 
 
 def main():
-    app = ApplicationBuilder().token(
-        "7554909272:AAFj4k-SlOk3aNeDZzP5ucB4dqvonfNM0Gw").build()
-    redis_client = RedisClient(host="127.0.0.1", port=6379)
+
+    load_dotenv()
+    
+    token = os.getenv('TELEGRAM_BOT_TOKEN')
+    if not token:
+        raise ValueError("TELEGRAM_BOT_TOKEN is not set in the .env file")
+    
+    app = ApplicationBuilder().token(token).build()
+    redis_client = RedisClient(host="redis", port=6379)
+
     redis_client.connect()
     auth = Authorization(redis_client)
 
@@ -32,7 +39,7 @@ def main():
     user_login_handler = UserLoginHandler(auth)
     user_logout_handler = UserLogoutHandler(auth)
     business_signup_handler = BusinessSignupHandler()
-    test_plan_handler = TestPlanHandler()
+    test_plan_handler = TestPlanHandler(auth)
     business_login_handler = BusinessLoginHandler(auth)
     business_logout_handler = BusinessLogoutHandler(auth)
     create_test_plan_handler = CreateTestPlanHandler(auth)
@@ -42,7 +49,7 @@ def main():
     business_test_plan_handler = BusinessTestPlanHandler(auth)
 
     business_profile_handler = BusinessProfileHandler(auth)
-    
+
     cancel_handler = CancelHandler()
 
     # Register handlers

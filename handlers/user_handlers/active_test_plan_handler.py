@@ -68,7 +68,11 @@ class ActiveTestPlanHandler:
         self.userService.create_feedback(
             user_id, context.user_data['plan_id'], context.user_data['feedback'])
 
-        await update.message.reply_text("Thank you for your feedback")
+        await update.message.reply_text("Thank you for your feedback"
+                                        "\n"
+                                        "Commands:\n"
+                                        "/active_test_plans - show active test plans \n"
+                                        "/test_plans - show all test plans")
         return ConversationHandler.END
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:

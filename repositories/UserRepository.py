@@ -6,7 +6,7 @@ class UserRepository(BaseRepository):
     def get_by_username(self, username):
         return self.session.query(User).filter(User.username == username).first()
 
-    def add_testplan(self, user, testplan_id):
-        user.testplans.append(testplan_id)
+    def add_testplan(self, user, testplan):
+        user.testplans.append(testplan)
         self.session.commit()
         return user
