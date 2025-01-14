@@ -18,6 +18,7 @@ import os
 from handlers.business_handlers.business_test_plan_handler import BusinessTestPlanHandler
 
 from handlers.business_handlers.business_profile_handler import BusinessProfileHandler
+from utilities.gemini import Gemini
 
 
 def main():
@@ -25,21 +26,24 @@ def main():
     load_dotenv()
     
     token = os.getenv('TELEGRAM_BOT_TOKEN')
+    gemini_api_key = os.getenv('GEMINI_API_KEY')
+    gemini_model = os.getenv('GEMINI_MODEL_NAME')
     if not token:
         raise ValueError("TELEGRAM_BOT_TOKEN is not set in the .env file")
     
     app = ApplicationBuilder().token(token).build()
-    redis_client = RedisClient(host="redis", port=6379)
+    redis_client = RedisClient(host="localhost", port=6379)
 
     redis_client.connect()
     auth = Authorization(redis_client)
+    gemini = Gemini(gemini_api_key, gemini_model)
 
     start_handler = StartHandler()
     user_signup_handler = UserSignupHandler()
     user_login_handler = UserLoginHandler(auth)
     user_logout_handler = UserLogoutHandler(auth)
     business_signup_handler = BusinessSignupHandler()
-    test_plan_handler = TestPlanHandler(auth)
+    test_plan_handler = TestPlanHandler(auth, gemini)
     business_login_handler = BusinessLoginHandler(auth)
     business_logout_handler = BusinessLogoutHandler(auth)
     create_test_plan_handler = CreateTestPlanHandler(auth)

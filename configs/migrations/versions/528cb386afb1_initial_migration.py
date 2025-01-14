@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 2278996657f9
+Revision ID: 528cb386afb1
 Revises: 
-Create Date: 2025-01-13 20:44:36.703076
+Create Date: 2025-01-14 18:45:05.057191
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '2278996657f9'
+revision: str = '528cb386afb1'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -38,8 +38,8 @@ def upgrade() -> None:
     )
     op.create_table('test_plans',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('name', sa.String(length=50), nullable=False),
-    sa.Column('description', sa.String(length=150), nullable=False),
+    sa.Column('name', sa.String(length=100), nullable=False),
+    sa.Column('description', sa.String(length=2000), nullable=False),
     sa.Column('start_date', sa.Date(), nullable=False),
     sa.Column('end_date', sa.Date(), nullable=False),
     sa.Column('status', sa.String(length=50), nullable=False),
@@ -50,7 +50,7 @@ def upgrade() -> None:
     )
     op.create_table('feedbacks',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
-    sa.Column('content', sa.String(length=100), nullable=False),
+    sa.Column('content', sa.String(length=2000), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('testplan_id', sa.Integer(), nullable=True),
     sa.ForeignKeyConstraint(['testplan_id'], ['test_plans.id'], ),
