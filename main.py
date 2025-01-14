@@ -32,7 +32,7 @@ def main():
         raise ValueError("TELEGRAM_BOT_TOKEN is not set in the .env file")
     
     app = ApplicationBuilder().token(token).build()
-    redis_client = RedisClient(host="localhost", port=6379)
+    redis_client = RedisClient()
 
     redis_client.connect()
     auth = Authorization(redis_client)
