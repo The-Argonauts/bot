@@ -5,7 +5,7 @@ from services.UserService import UserService
 from filters.Authorization import Authorization
 from datetime import datetime
 
-PLAN_ID, FEEDBACK = range(2)
+PLAN_ID, ASK_FEEDBACK, FEEDBACK = range(3)
 
 
 class ActiveTestPlanHandler:
@@ -14,6 +14,7 @@ class ActiveTestPlanHandler:
             entry_points=[CommandHandler("active_test_plans", self.start)],
             states={
                 PLAN_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.select_id)],
+                ASK_FEEDBACK: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.ask_feedback)],
                 FEEDBACK: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.give_feedback)],
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
@@ -39,7 +40,7 @@ class ActiveTestPlanHandler:
         current_date = datetime.now().date()
         active_plans = [
             test_plan for test_plan in test_plans
-            if test_plan.start_date <= current_date and test_plan.end_date >= current_date
+            if test_plan.start_date <= current_date <= test_plan.end_date
         ]
 
         if not active_plans:
@@ -53,16 +54,17 @@ class ActiveTestPlanHandler:
                     f"End Date: {test_plan.end_date}"
                 )
                 await update.message.reply_text(message)
-
-                await update.message.reply_text("Do you want to provide feedback for the selected Test Plan? (Yes/No)")
-                if update.message.text.lower() == "no":
-                    return ConversationHandler.END
-
-
-                await update.message.reply_text("Please enter the Test Plan ID you want to provide feedback for.")
                 context.user_data['active_plans'] = active_plans
+                await update.message.reply_text("Do you want to provide feedback for the selected Test Plan? (Yes/No)")
 
+        return ASK_FEEDBACK
+
+    async def ask_feedback(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        if update.message.text.lower() == "no":
+            return ConversationHandler.END
+        await update.message.reply_text("Please enter the Test Plan ID you want to provide feedback for.")
         return PLAN_ID
+
 
     async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data['plan_id'] = update.message.text
