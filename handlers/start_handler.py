@@ -10,7 +10,7 @@ class StartHandler:
         # gif_path = r'G:\AUT\Term7\Software\bot\asset\welcome-1.mp4'
         # await context.bot.send_animation(chat_id=update.effective_chat.id, animation=gif_path)
 
-        image_path = r'asset\Welecome.png'
+        image_path = r'asset/Welecome.png'
         await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(image_path, 'rb'))
 
         await update.message.reply_text(
