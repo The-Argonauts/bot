@@ -73,7 +73,6 @@ def main():
     profile_user_handler = ProfileHandler(user_service, auth)
     business_test_plan_handler = BusinessTestPlanHandler(business_service, user_service, testplan_service, auth)
     business_profile_handler = BusinessProfileHandler(business_service, auth)
-    cancel_handler = CancelHandler()
 
     # Register handlers
     app.add_handler(start_handler.handler)
@@ -81,7 +80,6 @@ def main():
     app.add_handler(user_login_handler.handler)
     app.add_handler(business_signup_handler.handler)
     app.add_handler(business_login_handler.handler)
-    app.add_handler(cancel_handler.handler)
     app.add_handler(test_plan_handler.handler)
     app.add_handler(create_test_plan_handler.handler)
     app.add_handler(user_logout_handler.handler)
