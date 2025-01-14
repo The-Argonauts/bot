@@ -6,7 +6,4 @@ COPY . /app
 
 RUN pip install -r requirements.txt
 
-CMD ["cd", "configs"]
-CMD ["alembic", "upgrade", "head"]
-
 CMD ["python", "main.py"]
