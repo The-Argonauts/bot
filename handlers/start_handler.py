@@ -12,8 +12,8 @@ class StartHandler:
 
         await update.message.reply_text(
             "Welcome to the Argonauts bot! Check out our website:\n"
-            "Our guide for commands is shown above"
-            "https://theargonauts.vercel.app\n\n"
+            "https://theargonauts.vercel.app\n"
+            "Our guide for commands is shown above\n"
             "Commands:\n"
             "/user_signup - Register as a user\n"
             "/user_login - Login as a user\n"
