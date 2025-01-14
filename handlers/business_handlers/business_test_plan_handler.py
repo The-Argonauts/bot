@@ -47,7 +47,7 @@ class BusinessTestPlanHandler:
                 f"End Date: {test_plan.end_date}"
             )
             await update.message.reply_text(message)
-        await update.message.reply_text("Please enter Plan Id.")
+        await update.message.reply_text("Please enter Plan Id to view feedbacks.")
         return PLAN_ID
 
     async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
