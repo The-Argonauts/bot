@@ -70,7 +70,7 @@ class ActiveTestPlanHandler:
         context.user_data['plan_id'] = update.message.text
 
         plan_id = context.user_data['plan_id']
-        if not plan_id.isdigit() and plan_id not in [str(plan.id) for plan in context.user_data['active_plans']]:
+        if not plan_id.isdigit():
             await update.message.reply_text("Invalid Test Plan ID. Please enter a valid Test Plan ID.")
             return PLAN_ID
 
@@ -82,8 +82,12 @@ class ActiveTestPlanHandler:
         user_id = self.authorization.get_user_id(
             str(update.effective_user.id))
 
-        self.userService.create_feedback(
-            user_id, context.user_data['plan_id'], context.user_data['feedback'])
+        try:
+            self.userService.create_feedback(
+                user_id, context.user_data['plan_id'], context.user_data['feedback'])
+        except Exception as e:
+            await update.message.reply_text(f"Feedback failed to submit. Please try again. {e}")
+            return ConversationHandler.END
 
         gif_path = r'assets/reward.mp4'
         await context.bot.send_animation(chat_id=update.effective_chat.id, animation=gif_path, caption="Here is a gif for you!")
