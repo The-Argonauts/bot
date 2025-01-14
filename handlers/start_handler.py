@@ -1,4 +1,4 @@
-from telegram import Update, InputFile
+from telegram import Update
 from telegram.ext import CommandHandler, ContextTypes
 
 
@@ -7,7 +7,7 @@ class StartHandler:
         self.handler = CommandHandler("start", self.start)
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
-        image_path = r'asset\Welecome.png'
+        image_path = r'assets/welcome.png'
         await context.bot.send_photo(chat_id=update.effective_chat.id, photo=open(image_path, 'rb'))
 
         await update.message.reply_text(

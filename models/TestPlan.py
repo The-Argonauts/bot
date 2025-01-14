@@ -8,8 +8,8 @@ from models.Feedback import Feedback
 class TestPlan(BaseModel):
     __tablename__ = "test_plans"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(50), nullable=False)
-    description = Column(String(150), nullable=False)
+    name = Column(String(100), nullable=False)
+    description = Column(String(2000), nullable=False)
     start_date = Column(Date, nullable=False)
     end_date = Column(Date, nullable=False)
     status = Column(String(50), nullable=False)
