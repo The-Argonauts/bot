@@ -62,6 +62,11 @@ class ActiveTestPlanHandler:
     async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data['plan_id'] = update.message.text
 
+        plan_id = context.user_data['plan_id']
+        if not plan_id.isdigit() and plan_id not in [str(plan.id) for plan in context.user_data['active_plans']]:
+            await update.message.reply_text("Invalid Test Plan ID. Please enter a valid Test Plan ID.")
+            return PLAN_ID
+
         await update.message.reply_text("Please provide your feedback for the selected Test Plan.")
         return FEEDBACK
 
@@ -73,6 +78,8 @@ class ActiveTestPlanHandler:
         self.userService.create_feedback(
             user_id, context.user_data['plan_id'], context.user_data['feedback'])
 
+        gif_path = r'assets/reward.mp4'
+        await context.bot.send_animation(chat_id=update.effective_chat.id, animation=gif_path, caption="Here is a gif for you!")
         await update.message.reply_text("Thank you for your feedback"
                                         "\n"
                                         "Commands:\n"

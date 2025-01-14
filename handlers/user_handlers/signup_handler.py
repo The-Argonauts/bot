@@ -75,13 +75,18 @@ class UserSignupHandler:
 
     async def agreement(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         if update.message.text.lower() == "yes":
-            self.user_service.create_user(
-                context.user_data["name"],
-                context.user_data["username"],
-                context.user_data["phone_number"],
-                context.user_data["email"],
-                context.user_data["password"],
-            )
+            try:
+                self.user_service.create_user(
+                    context.user_data["name"],
+                    context.user_data["username"],
+                    context.user_data["phone_number"],
+                    context.user_data["email"],
+                    context.user_data["password"],
+                )
+            except ValueError as e:
+                await update.message.reply_text(str(e))
+                return ConversationHandler.END
+
             await update.message.reply_text(
                 "Signup completed! Thank you.\n\n"
                 "Commands:\n"

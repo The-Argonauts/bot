@@ -50,11 +50,16 @@ class BusinessSignupHandler:
 
     async def agreement(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         if update.message.text.lower() == "yes":
-            self.business_service.create_business(
-                context.user_data["name"],
-                context.user_data["username"],
-                context.user_data["password"],
-            )
+
+            try:
+                self.business_service.create_business(
+                    context.user_data["name"],
+                    context.user_data["username"],
+                    context.user_data["password"],
+                )
+            except ValueError as e:
+                await update.message.reply_text(str(e))
+                return ConversationHandler.END
             await update.message.reply_text("Signup complete! Thank you.\n"
                                             "\n"
                                             "Commands:\n"
