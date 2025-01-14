@@ -8,8 +8,7 @@ USERNAME, PASSWORD = range(2)
 
 
 class UserLoginHandler:
-    def __init__(self, authorization: Authorization):
-
+    def __init__(self, user_service: UserService, authorization: Authorization):
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("user_login", self.start)],
             states={
@@ -18,7 +17,7 @@ class UserLoginHandler:
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
-        self.user_service = UserService()
+        self.user_service = user_service
         self.authorization = authorization
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:

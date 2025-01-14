@@ -9,7 +9,7 @@ PLAN_ID, FEEDBACK = range(2)
 
 
 class ActiveTestPlanHandler:
-    def __init__(self, authorization: Authorization):
+    def __init__(self, testplan_service: TestPlanService, user_service: UserService, authorization: Authorization):
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("active_test_plans", self.start)],
             states={
@@ -20,9 +20,9 @@ class ActiveTestPlanHandler:
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
 
-        self.testPlanService = TestPlanService()
+        self.testPlanService = testplan_service
         self.authorization = authorization
-        self.userService = UserService()
+        self.userService = user_service
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 

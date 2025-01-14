@@ -3,13 +3,12 @@ from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, fi
 from filters.Authorization import Authorization
 from services.UserService import UserService
 from services.TestPlanService import TestPlanService
-from utilities.gemini import Gemini
 
 PLAN_ID, SUGGESTION, USER_INFORMATION, APPLY = range(4)
 
 
 class TestPlanHandler:
-    def __init__(self, authorization: Authorization, gemini:Gemini):
+    def __init__(self, testplan_service:TestPlanService, user_service: UserService, authorization: Authorization):
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("test_plans", self.start)],
             states={
@@ -21,8 +20,8 @@ class TestPlanHandler:
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
 
-        self.user_service = UserService()
-        self.testplan_service = TestPlanService(gemini)
+        self.user_service = user_service
+        self.testplan_service = testplan_service
         self.authorization = authorization
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:

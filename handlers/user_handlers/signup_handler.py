@@ -8,7 +8,7 @@ NAME, USERNAME, PASSWORD, EMAIL, PHONE_NUMBER, AGREEMENT = range(6)
 
 
 class UserSignupHandler:
-    def __init__(self, authorization: Authorization):
+    def __init__(self, user_service: UserService,authorization: Authorization):
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("user_signup", self.start)],
             states={
@@ -21,7 +21,7 @@ class UserSignupHandler:
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
-        self.user_service = UserService()
+        self.user_service = user_service
         self.authorization = authorization
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         try:

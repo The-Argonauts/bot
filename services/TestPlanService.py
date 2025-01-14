@@ -6,10 +6,10 @@ from utilities.gemini import Gemini
 
 
 class TestPlanService:
-    def __init__(self, gemini:Gemini=None):
+    def __init__(self, testplan_repo: TestPlanRepository, feedback_repo: FeedbackRepository, gemini:Gemini=None):
         self.db_session = SessionLocal()
-        self.feedback_repo = FeedbackRepository(self.db_session)
-        self.testplan_repo = TestPlanRepository(self.db_session)
+        self.feedback_repo = feedback_repo
+        self.testplan_repo = testplan_repo
         self.gemini = gemini
 
     def get_all_testplans(self):

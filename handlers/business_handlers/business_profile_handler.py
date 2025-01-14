@@ -1,17 +1,17 @@
 from telegram import Update
-from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters, ContextTypes
+from telegram.ext import ConversationHandler, CommandHandler, ContextTypes
 
 from filters.Authorization import Authorization
 from services.BusinessService import BusinessService
 
 
 class BusinessProfileHandler:
-    def __init__(self, authorization: Authorization):
+    def __init__(self, business_service: BusinessService, authorization: Authorization):
         self.handlers = [
             CommandHandler("show_business_profile", self.start),
             CommandHandler("cancel", self.cancel),
         ]
-        self.business_service = BusinessService()
+        self.business_service = business_service
         self.authorization = authorization
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:

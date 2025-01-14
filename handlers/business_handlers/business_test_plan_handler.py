@@ -1,5 +1,3 @@
-from datetime import datetime, timedelta
-
 from telegram import Update
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters, ContextTypes
 
@@ -12,7 +10,7 @@ PLAN_ID = range(1)
 
 
 class BusinessTestPlanHandler:
-    def __init__(self, authorization: Authorization):
+    def __init__(self, business_service: BusinessService, user_service: UserService, testplan_service: TestPlanService, authorization: Authorization):
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("my_test_plans", self.start)],
             states={
@@ -21,10 +19,10 @@ class BusinessTestPlanHandler:
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
 
-        self.userService = UserService()
-        self.testPlanService = TestPlanService()
+        self.userService = user_service
+        self.testPlanService = testplan_service
         self.authorization = authorization
-        self.businessService = BusinessService()
+        self.businessService = business_service
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 

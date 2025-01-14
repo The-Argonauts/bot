@@ -5,12 +5,13 @@ from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, fi
 
 from filters.Authorization import Authorization
 from services.BusinessService import BusinessService
+
 # States
 NAME, DESCRIPTION, END_DATE, REWARD = range(4)
 
 
 class CreateTestPlanHandler:
-    def __init__(self, authorization: Authorization):
+    def __init__(self, business_service: BusinessService, authorization: Authorization):
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("create_test_plan", self.start)],
             states={
@@ -21,7 +22,7 @@ class CreateTestPlanHandler:
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
-        self.business_service = BusinessService()
+        self.business_service = business_service
         self.authorization = authorization
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:

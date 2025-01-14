@@ -7,11 +7,11 @@ from configs.database import SessionLocal
 
 
 class UserService:
-    def __init__(self):
+    def __init__(self, user_repo: UserRepository, feedback_repo: FeedbackRepository, test_plan_repo: TestPlanRepository):
         self.db_session = SessionLocal()
-        self.user_repo = UserRepository(self.db_session)
-        self.feedback_repo = FeedbackRepository(self.db_session)
-        self.test_plan_repo = TestPlanRepository(self.db_session)
+        self.user_repo = user_repo
+        self.feedback_repo = feedback_repo
+        self.test_plan_repo = test_plan_repo
 
     def create_user(self, name: str, username: str, phone_number: str, email: str, password: str):
         user = self.user_repo.get_by_username(username)
