@@ -70,7 +70,7 @@ class CreateTestPlanHandler:
         await update.message.reply_text("Test plan created successfully."
                                         "\n"
                                         "Commands:\n"
-                                        "\my_test_plans - show my test plans")
+                                        "/my_test_plans - show my test plans")
         return ConversationHandler.END
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:

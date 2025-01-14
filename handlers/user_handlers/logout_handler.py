@@ -23,8 +23,6 @@ class UserLogoutHandler:
         self.authorization.delete_user_token(str(update.effective_user.id))
         await update.message.reply_text("You are logged out."
                                         "\n"
-                                        "Commands:\n"
-                                        "/active_test_plans - show active test plans"
                                         "/start - Return to start page")
         return ConversationHandler.END
 
