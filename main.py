@@ -39,10 +39,10 @@ def main():
     gemini = Gemini(gemini_api_key, gemini_model)
 
     start_handler = StartHandler()
-    user_signup_handler = UserSignupHandler()
+    user_signup_handler = UserSignupHandler(auth)
     user_login_handler = UserLoginHandler(auth)
     user_logout_handler = UserLogoutHandler(auth)
-    business_signup_handler = BusinessSignupHandler()
+    business_signup_handler = BusinessSignupHandler(auth)
     test_plan_handler = TestPlanHandler(auth, gemini)
     business_login_handler = BusinessLoginHandler(auth)
     business_logout_handler = BusinessLogoutHandler(auth)

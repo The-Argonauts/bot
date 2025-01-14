@@ -15,8 +15,12 @@ class ProfileHandler:
         self.authorization = authorization
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        if not self.authorization.authorize_user(str(update.effective_user.id)):
-            await update.message.reply_text("You need to login as a user first.")
+        try:
+            if not self.authorization.authorize_user(str(update.effective_user.id)):
+                await update.message.reply_text("You need to login as a user first.")
+                return ConversationHandler.END
+        except ValueError as e:
+            await update.message.reply_text(str(e))
             return ConversationHandler.END
 
         user = self.user_service.get_user(

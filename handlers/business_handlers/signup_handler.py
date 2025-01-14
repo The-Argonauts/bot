@@ -1,13 +1,14 @@
 from telegram import Update
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, filters, ContextTypes
 
+from filters.Authorization import Authorization
 from services.BusinessService import BusinessService
 # States
 NAME, USERNAME, PASSWORD, AGREEMENT = range(4)
 
 
 class BusinessSignupHandler:
-    def __init__(self):
+    def __init__(self, authorization: Authorization):
         self.handler = ConversationHandler(
             entry_points=[CommandHandler("business_signup", self.start)],
             states={
@@ -19,8 +20,16 @@ class BusinessSignupHandler:
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
         self.business_service = BusinessService()
+        self.authorization = authorization
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        try:
+            if self.authorization.authorize_business(str(update.effective_user.id)):
+                await update.message.reply_text("You need to logout from your business account")
+                return ConversationHandler.END
+        except ValueError as e:
+            await update.message.reply_text(str(e))
+            return ConversationHandler.END
         await update.message.reply_text("Please enter your name.")
         return NAME
 

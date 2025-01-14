@@ -26,8 +26,12 @@ class TestPlanHandler:
         self.authorization = authorization
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        if not self.authorization.authorize_user(str(update.effective_user.id)):
-            await update.message.reply_text("You need to log in to the user portal first.")
+        try:
+            if not self.authorization.authorize_user(str(update.effective_user.id)):
+                await update.message.reply_text("You need to log in to the user portal first.")
+                return ConversationHandler.END
+        except ValueError as e:
+            await update.message.reply_text(str(e))
             return ConversationHandler.END
 
         test_plans = self.testplan_service.get_all_testplans()

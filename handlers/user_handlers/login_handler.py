@@ -22,6 +22,14 @@ class UserLoginHandler:
         self.authorization = authorization
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+        try:
+            if self.authorization.authorize_business(str(update.effective_user.id)):
+                await update.message.reply_text("You need to logout from business account")
+                return ConversationHandler.END
+        except ValueError as e:
+            await update.message.reply_text(str(e))
+            return ConversationHandler.END
+
         await update.message.reply_text("Please enter your username.")
         return USERNAME
 

@@ -25,8 +25,12 @@ class CreateTestPlanHandler:
         self.authorization = authorization
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        if not self.authorization.authorize_business(str(update.effective_user.id)):
-            await update.message.reply_text("You need to login to business portal's first.")
+        try:
+            if not self.authorization.authorize_business(str(update.effective_user.id)):
+                await update.message.reply_text("You need to login to business portal's first.")
+                return ConversationHandler.END
+        except ValueError as e:
+            await update.message.reply_text(str(e))
             return ConversationHandler.END
 
         await update.message.reply_text("Please enter your testplan name.")

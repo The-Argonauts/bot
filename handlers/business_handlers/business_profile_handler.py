@@ -15,10 +15,13 @@ class BusinessProfileHandler:
         self.authorization = authorization
         
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        if not self.authorization.authorize_business(str(update.effective_user.id)):
-            await update.message.reply_text("You need to login as a business first.")
+        try:
+            if not self.authorization.authorize_business(str(update.effective_user.id)):
+                await update.message.reply_text("You need to login as a business first.")
+                return ConversationHandler.END
+        except ValueError as e:
+            await update.message.reply_text(str(e))
             return ConversationHandler.END
-        
         business = self.business_service.get_business(self.authorization.get_business_id(str(update.effective_user.id)))
         message = (
             f"Name: {business.name}\n"

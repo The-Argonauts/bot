@@ -27,8 +27,13 @@ class BusinessTestPlanHandler:
         self.businessService = BusinessService()
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        if not self.authorization.authorize_business(str(update.effective_user.id)):
-            await update.message.reply_text("You need to log in to the business portal first.")
+
+        try:
+            if not self.authorization.authorize_business(str(update.effective_user.id)):
+                await update.message.reply_text("You need to log in to the business portal first.")
+                return ConversationHandler.END
+        except ValueError as e:
+            await update.message.reply_text(str(e))
             return ConversationHandler.END
 
         business_test_plans = self.businessService.get_business_testplans(

@@ -12,8 +12,12 @@ class BusinessLogoutHandler:
         self.authorization = authorization
 
     async def start(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-        if not self.authorization.authorize_business(str(update.effective_user.id)):
-            await update.message.reply_text("You are not logged in.")
+        try:
+            if not self.authorization.authorize_business(str(update.effective_user.id)):
+                await update.message.reply_text("You are not logged in.")
+                return ConversationHandler.END
+        except ValueError as e:
+            await update.message.reply_text(str(e))
             return ConversationHandler.END
         self.authorization.delete_business_token(str(update.effective_user.id))
         await update.message.reply_text("You are logged out.")
