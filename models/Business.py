@@ -11,9 +11,9 @@ from utilities.PasswordUtils import PasswordUtils
 class Business(BaseModel):
     __tablename__ = 'businesses'
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String, nullable=False)
-    username = Column(String, nullable=False)
-    password = Column(String, nullable=False)
+    name = Column(String(50), nullable=False)
+    username = Column(String(50), nullable=False)
+    password = Column(String(200), nullable=False)
 
     test_plans: Mapped[List["TestPlan"]] = relationship()
 

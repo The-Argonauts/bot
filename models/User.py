@@ -11,11 +11,11 @@ from utilities.PasswordUtils import PasswordUtils
 class User(BaseModel):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String, nullable=False)
-    username = Column(String, nullable=False)
-    password = Column(String, nullable=False)
-    email = Column(String, nullable=False)
-    phone_number = Column(String, nullable=False)
+    name = Column(String(50), nullable=False)
+    username = Column(String(50), nullable=False)
+    password = Column(String(200), nullable=False)
+    email = Column(String(50), nullable=False)
+    phone_number = Column(String(50), nullable=False)
 
     testplans: Mapped[List[TestPlan]] = relationship(secondary=association_table)
     feedbacks: Mapped[List["Feedback"]] = relationship()
