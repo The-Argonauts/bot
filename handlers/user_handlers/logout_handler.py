@@ -20,8 +20,8 @@ class UserLogoutHandler:
         await update.message.reply_text("You are logged out."
                                         "\n"
                                         "Commands:\n"
-                                        "\active_test_plans - show active test plans"
-                                        "\start - Return to start page")
+                                        "/active_test_plans - show active test plans"
+                                        "/start - Return to start page")
         return ConversationHandler.END
 
     async def cancel(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
