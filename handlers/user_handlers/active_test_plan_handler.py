@@ -53,6 +53,12 @@ class ActiveTestPlanHandler:
                     f"End Date: {test_plan.end_date}"
                 )
                 await update.message.reply_text(message)
+
+                await update.message.reply_text("Do you want to provide feedback for the selected Test Plan? (Yes/No)")
+                if update.message.text.lower() == "no":
+                    return ConversationHandler.END
+
+
                 await update.message.reply_text("Please enter the Test Plan ID you want to provide feedback for.")
                 context.user_data['active_plans'] = active_plans
 
@@ -65,9 +71,6 @@ class ActiveTestPlanHandler:
         if not plan_id.isdigit() and plan_id not in [str(plan.id) for plan in context.user_data['active_plans']]:
             await update.message.reply_text("Invalid Test Plan ID. Please enter a valid Test Plan ID.")
             return PLAN_ID
-        await update.message.reply_text("Do you want to provide feedback for the selected Test Plan? (Yes/No)")
-        if update.message.text.lower() == "no":
-            return ConversationHandler.END
 
         await update.message.reply_text("Please provide your feedback for the selected Test Plan.")
         return FEEDBACK
