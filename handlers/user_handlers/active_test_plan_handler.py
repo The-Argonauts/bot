@@ -15,7 +15,6 @@ class ActiveTestPlanHandler:
             states={
                 PLAN_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.select_id)],
                 FEEDBACK: [MessageHandler(filters.TEXT & ~filters.COMMAND, self.give_feedback)],
-
             },
             fallbacks=[CommandHandler("cancel", self.cancel)],
         )
@@ -66,6 +65,9 @@ class ActiveTestPlanHandler:
         if not plan_id.isdigit() and plan_id not in [str(plan.id) for plan in context.user_data['active_plans']]:
             await update.message.reply_text("Invalid Test Plan ID. Please enter a valid Test Plan ID.")
             return PLAN_ID
+        await update.message.reply_text("Do you want to provide feedback for the selected Test Plan? (Yes/No)")
+        if update.message.text.lower() == "no":
+            return ConversationHandler.END
 
         await update.message.reply_text("Please provide your feedback for the selected Test Plan.")
         return FEEDBACK
