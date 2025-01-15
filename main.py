@@ -33,7 +33,6 @@ from utilities.gemini import Gemini
 def main():
 
     load_dotenv()
-    
     token = os.getenv('TELEGRAM_BOT_TOKEN')
     gemini_api_key = os.getenv('GEMINI_API_KEY')
     gemini_model = os.getenv('GEMINI_MODEL_NAME')
