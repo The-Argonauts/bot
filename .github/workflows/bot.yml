@@ -8,11 +8,6 @@ on:
 env:
   IMAGE_NAME: bot-image
   REGISTRY: docker.io
-  TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-  GEMINI_API_SECRET: ${{ secrets.GEMINI_API_SECRET }}
 
 jobs:
   build:
@@ -42,19 +37,18 @@ jobs:
           echo "GEMINI_API_SECRET=${{ secrets.GEMINI_API_SECRET }}" >> .env
 
       - name: Build and Push Docker Image
-        uses: docker/build-push-action@v6.9.0
+        uses: docker/build-push-action@v4
         with:
           file: Dockerfile
           context: .
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME }}:latest
 
   deploy:
     name: Deploy
     runs-on: argo
     timeout-minutes: 10
-    needs:
-      - build
+    needs: [ build ]
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -68,6 +62,6 @@ jobs:
       - name: Pull Latest Image
         run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
-      - name: Docker Run
+      - name: Start Services with Docker Compose
         run: |
-          docker compose up -d
+          docker compose up -d 
