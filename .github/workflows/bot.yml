@@ -35,6 +35,7 @@ jobs:
           echo "TELEGRAM_TOKEN=${{ secrets.TELEGRAM_TOKEN }}" >> .env
           echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" >> .env
           echo "GEMINI_API_SECRET=${{ secrets.GEMINI_API_SECRET }}" >> .env
+          echo "DATABASE_URL=${{secrets.DATABASE_URL}}" >> .env
 
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v4
