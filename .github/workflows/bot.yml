@@ -60,7 +60,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Pull Latest Image
-        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+        run: docker pull ${{ secrets.DOCKER_USERNAME}}/${{ env.IMAGE_NAME }}:latest
 
       - name: Start Services with Docker Compose
         run: |
