@@ -49,6 +49,9 @@ class CreateTestPlanHandler:
 
     async def end_date(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["end_date"] = update.message.text
+        if not context.user_data["end_date"].isdigit():
+            await update.message.reply_text("Please enter a valid number.")
+            return END_DATE
         await update.message.reply_text("Please enter the reward for the testplan.")
         return REWARD
 

@@ -38,6 +38,8 @@ class BusinessTestPlanHandler:
             self.authorization.get_business_id(
                 str(update.effective_user.id)))
 
+        context.user_data["business_test_plans"] = business_test_plans
+
         if not business_test_plans:
             await update.message.reply_text("No test plans available.")
             return ConversationHandler.END
@@ -55,6 +57,12 @@ class BusinessTestPlanHandler:
 
     async def select_id(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
         context.user_data["plan_id"] = update.message.text
+
+        business_testplan_ids = [str(test_plan.id) for test_plan in context.user_data["business_test_plans"]]
+
+        if context.user_data["plan_id"] not in business_testplan_ids:
+            await update.message.reply_text("Invalid Test Plan ID.")
+            return PLAN_ID
 
         feedbacks = self.testPlanService.get_feedback(
             context.user_data["plan_id"])

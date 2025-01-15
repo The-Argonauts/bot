@@ -63,6 +63,7 @@ class TestPlanHandler:
                 f"Test Plan ID: {selected_test_plan.id}\n"
                 f"Name: {selected_test_plan.name}\n"
                 f"Description: {selected_test_plan.description}\n"
+                f"Reward: {selected_test_plan.reward}\n"
                 f"Start Date: {selected_test_plan.start_date}\n"
                 f"End Date: {selected_test_plan.end_date}"
             )
