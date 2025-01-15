@@ -46,7 +46,7 @@ jobs:
 
   deploy:
     name: Deploy
-    runs-on: argo
+    runs-on: self-hosted
     timeout-minutes: 10
     needs: [ build ]
     steps:
